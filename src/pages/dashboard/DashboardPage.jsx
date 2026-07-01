@@ -62,25 +62,30 @@ const DashboardPage = () => {
   const notificationStatus = useSelector((state) => state.notification.status)
   const notifications = useSelector((state) => state.notification.items)
 
-  const hasExistingData = Boolean(dashboardSummary || dashboardTrend.length || riskSignals.length || vendors.length || notifications.length)
+  const safeRiskSignals = Array.isArray(riskSignals) ? riskSignals : []
+  const safeVendors = Array.isArray(vendors) ? vendors : []
+  const safeNotifications = Array.isArray(notifications) ? notifications : []
+  const safeDashboardTrend = Array.isArray(dashboardTrend) ? dashboardTrend : []
+
+  const hasExistingData = Boolean(dashboardSummary || safeDashboardTrend.length || safeRiskSignals.length || safeVendors.length || safeNotifications.length)
 
   useEffect(() => {
     if (dashboardStatus === 'idle' && !dashboardSummary) {
       dispatch(fetchDashboardMetrics())
     }
 
-    if (riskStatus === 'idle' && !riskSignals.length) {
+    if (riskStatus === 'idle' && !safeRiskSignals.length) {
       dispatch(fetchRiskSignals())
     }
 
-    if (notificationStatus === 'idle' && !notifications.length) {
+    if (notificationStatus === 'idle' && !safeNotifications.length) {
       dispatch(fetchNotifications())
     }
 
-    if (vendorStatus === 'idle' && !vendors.length) {
+    if (vendorStatus === 'idle' && !safeVendors.length) {
       dispatch(fetchVendors())
     }
-  }, [dashboardStatus, dashboardSummary, dispatch, notificationStatus, notifications.length, riskSignals.length, riskStatus, vendorStatus, vendors.length])
+  }, [dashboardStatus, dashboardSummary, dispatch, notificationStatus, safeNotifications.length, safeRiskSignals.length, riskStatus, safeVendors.length, vendorStatus])
 
   const isLoading = [dashboardStatus, riskStatus, vendorStatus, notificationStatus].some((status) => status === 'loading') && !hasExistingData
 
@@ -111,13 +116,13 @@ const DashboardPage = () => {
     },
     {
       title: 'Total Vendors',
-      value: vendors.length,
+      value: safeVendors.length,
       icon: <GroupRounded />,
       color: 'secondary.main',
     },
     {
       title: 'Active Risks',
-      value: riskSignals.filter((risk) => risk.status === 'Open' || risk.status === 'Monitoring').length,
+      value: safeRiskSignals.filter((risk) => risk.status === 'Open' || risk.status === 'Monitoring').length,
       icon: <ShieldRounded />,
       color: 'info.main',
     },
@@ -129,14 +134,14 @@ const DashboardPage = () => {
     },
   ]
 
-  const monthlyTrend = dashboardTrend.length
-    ? dashboardTrend.map((item) => ({ month: item.label, value: item.value }))
+  const monthlyTrend = safeDashboardTrend.length
+    ? safeDashboardTrend.map((item) => ({ month: item.label, value: item.value }))
     : Array.from({ length: 12 }, (_, index) => ({
         month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][index],
         value: 180000 + index * 12000 + (index % 3) * 5000,
       }))
 
-  const timelineEvents = notifications.slice(0, 10).map((item) => ({
+  const timelineEvents = safeNotifications.slice(0, 10).map((item) => ({
     ...item,
     time: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
   }))

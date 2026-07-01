@@ -7,7 +7,9 @@ const simulateDelay = (ms = 450) => new Promise((resolve) => window.setTimeout(r
 export const fetchRiskSignals = createAsyncThunk('risk/fetchRiskSignals', async (_, { dispatch, rejectWithValue }) => {
   try {
     await simulateDelay()
-    const payload = { items: riskData }
+    const payload = {
+      items: Array.isArray(riskData?.riskList) ? riskData.riskList : Array.isArray(riskData) ? riskData : [],
+    }
     dispatch(pushSnackbar({ message: 'Risk signals loaded.', severity: 'success' }))
     return payload
   } catch (error) {
