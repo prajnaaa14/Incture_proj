@@ -1,0 +1,242 @@
+[
+  {
+    "id": "VND-001",
+    "name": "Northwind Supplies",
+    "category": "Manufacturing",
+    "riskScore": 24,
+    "status": "Approved",
+    "certifications": ["ISO 9001", "SOC 2"],
+    "contacts": [
+      { "name": "Riley Chen", "email": "riley@northwind.com" }
+    ],
+    "registeredDate": "2023-01-14"
+  },
+  {
+    "id": "VND-002",
+    "name": "Apex Logistics",
+    "category": "Logistics",
+    "riskScore": 41,
+    "status": "Under Review",
+    "certifications": ["ISO 14001"],
+    "contacts": [
+      { "name": "Mina Shah", "email": "mina@apexlog.com" }
+    ],
+    "registeredDate": "2022-08-21"
+  },
+  {
+    "id": "VND-003",
+    "name": "BluePeak Technologies",
+    "category": "Technology",
+    "riskScore": 18,
+    "status": "Approved",
+    "certifications": ["SOC 2", "GDPR"],
+    "contacts": [
+      { "name": "Drew Lewis", "email": "drew@bluepeak.io" }
+    ],
+    "registeredDate": "2024-03-10"
+  },
+  {
+    "id": "VND-004",
+    "name": "Horizon Industrial",
+    "category": "Manufacturing",
+    "riskScore": 63,
+    "status": "High Risk",
+    "certifications": ["ISO 45001"],
+    "contacts": [
+      { "name": "Nina Patel", "email": "nina@horizonind.com" }
+    ],
+    "registeredDate": "2021-11-04"
+  },
+  {
+    "id": "VND-005",
+    "name": "Summit Consulting",
+    "category": "Services",
+    "riskScore": 29,
+    "status": "Approved",
+    "certifications": ["ISO 27001"],
+    "contacts": [
+      { "name": "Kevin Ortiz", "email": "kevin@summitconsult.com" }
+    ],
+    "registeredDate": "2023-06-17"
+  },
+  {
+    "id": "VND-006",
+    "name": "Crestline Foods",
+    "category": "Food",
+    "riskScore": 55,
+    "status": "Under Review",
+    "certifications": ["HACCP"],
+    "contacts": [
+      { "name": "Jade Rivera", "email": "jade@crestlinefoods.com" }
+    ],
+    "registeredDate": "2022-09-03"
+  },
+  {
+    "id": "VND-007",
+    "name": "Metro Freight",
+    "category": "Logistics",
+    "riskScore": 37,
+    "status": "Approved",
+    "certifications": ["ISO 9001"],
+    "contacts": [
+      { "name": "Omar Diaz", "email": "omar@metrofreight.com" }
+    ],
+    "registeredDate": "2024-01-29"
+  },
+  {
+    "id": "VND-008",
+    "name": "Pioneer Medical",
+    "category": "Healthcare",
+    "riskScore": 47,
+    "status": "Under Review",
+    "certifications": ["FDA", "ISO 13485"],
+    "contacts": [
+      { "name": "Lina Gomez", "email": "lina@pioneermedical.com" }
+    ],
+    "registeredDate": "2023-05-12"
+  },
+  {
+    "id": "VND-009",
+    "name": "Cedar Energy",
+    "category": "Energy",
+    "riskScore": 31,
+    "status": "Approved",
+    "certifications": ["ISO 50001"],
+    "contacts": [
+      { "name": "Ethan Brooks", "email": "ethan@cedarenergy.com" }
+    ],
+    "registeredDate": "2022-12-01"
+  },
+  {
+    "id": "VND-010",
+    "name": "Harbor Chemicals",
+    "category": "Chemicals",
+    "riskScore": 72,
+    "status": "High Risk",
+    "certifications": ["ISO 14001"],
+    "contacts": [
+      { "name": "Tessa Moore", "email": "tessa@harborchem.com" }
+    ],
+    "registeredDate": "2021-07-22"
+  },
+  {
+    "id": "VND-011",
+    "name": "Atlas Retail Group",
+    "category": "Retail",
+    "riskScore": 22,
+    "status": "Approved",
+    "certifications": ["SOC 2"],
+    "contacts": [
+      { "name": "Harper Singh", "email": "harper@atlasretail.com" }
+    ],
+    "registeredDate": "2023-10-08"
+  },
+  {
+    "id": "VND-012",
+    "name": "Verdant Works",
+    "category": "Services",
+    "riskScore": 34,
+    "status": "Under Review",
+    "certifications": ["ISO 9001"],
+    "contacts": [
+      { "name": "Caleb Reed", "email": "caleb@verdantworks.com" }
+    ],
+    "registeredDate": "2024-02-19"
+  },
+  {
+    "id": "VND-013",
+    "name": "Quantum Data",
+    "category": "Technology",
+    "riskScore": 27,
+    "status": "Approved",
+    "certifications": ["SOC 2", "ISO 27001"],
+    "contacts": [
+      { "name": "Mila Scott", "email": "mila@quantumdata.com" }
+    ],
+    "registeredDate": "2023-11-27"
+  },
+  {
+    "id": "VND-014",
+    "name": "Prime Packaging",
+    "category": "Packaging",
+    "riskScore": 58,
+    "status": "High Risk",
+    "certifications": ["ISO 9001"],
+    "contacts": [
+      { "name": "Adrian Cole", "email": "adrian@primepack.com" }
+    ],
+    "registeredDate": "2022-04-15"
+  },
+  {
+    "id": "VND-015",
+    "name": "Aurelia Labs",
+    "category": "Healthcare",
+    "riskScore": 21,
+    "status": "Approved",
+    "certifications": ["ISO 13485"],
+    "contacts": [
+      { "name": "Paula Nguyen", "email": "paula@aurelia-labs.com" }
+    ],
+    "registeredDate": "2024-05-02"
+  },
+  {
+    "id": "VND-016",
+    "name": "Delta Systems",
+    "category": "Technology",
+    "riskScore": 45,
+    "status": "Under Review",
+    "certifications": ["SOC 2"],
+    "contacts": [
+      { "name": "Theo Turner", "email": "theo@deltasystems.com" }
+    ],
+    "registeredDate": "2022-06-25"
+  },
+  {
+    "id": "VND-017",
+    "name": "Solstice Energy",
+    "category": "Energy",
+    "riskScore": 26,
+    "status": "Approved",
+    "certifications": ["ISO 50001"],
+    "contacts": [
+      { "name": "Zara Ellis", "email": "zara@solsticeenergy.com" }
+    ],
+    "registeredDate": "2023-02-14"
+  },
+  {
+    "id": "VND-018",
+    "name": "BrightStar Retail",
+    "category": "Retail",
+    "riskScore": 39,
+    "status": "Under Review",
+    "certifications": ["ISO 9001"],
+    "contacts": [
+      { "name": "Ian Brooks", "email": "ian@brightstarretail.com" }
+    ],
+    "registeredDate": "2023-09-01"
+  },
+  {
+    "id": "VND-019",
+    "name": "Evergreen Foods",
+    "category": "Food",
+    "riskScore": 30,
+    "status": "Approved",
+    "certifications": ["HACCP", "ISO 22000"],
+    "contacts": [
+      { "name": "Sage Collins", "email": "sage@evergreenfoods.com" }
+    ],
+    "registeredDate": "2022-01-18"
+  },
+  {
+    "id": "VND-020",
+    "name": "Lumen Dynamics",
+    "category": "Technology",
+    "riskScore": 52,
+    "status": "High Risk",
+    "certifications": ["SOC 2"],
+    "contacts": [
+      { "name": "Mason Price", "email": "mason@lumendynamics.com" }
+    ],
+    "registeredDate": "2021-03-08"
+  }
+]

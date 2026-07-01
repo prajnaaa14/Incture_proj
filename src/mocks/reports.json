@@ -1,0 +1,66 @@
+[
+  {
+    "id": "RPT-001",
+    "name": "Spend Overview",
+    "type": "Finance",
+    "filters": { "period": "Q2", "department": "All" },
+    "createdDate": "2026-06-15",
+    "createdBy": "Asha Rao"
+  },
+  {
+    "id": "RPT-002",
+    "name": "Vendor Risk Heatmap",
+    "type": "Risk",
+    "filters": { "period": "Monthly", "category": "All" },
+    "createdDate": "2026-06-10",
+    "createdBy": "James Patel"
+  },
+  {
+    "id": "RPT-003",
+    "name": "Procurement Pipeline",
+    "type": "Operations",
+    "filters": { "status": "Pending", "department": "All" },
+    "createdDate": "2026-06-08",
+    "createdBy": "Mina Chen"
+  },
+  {
+    "id": "RPT-004",
+    "name": "Compliance Exceptions",
+    "type": "Compliance",
+    "filters": { "period": "Current Quarter", "severity": "High" },
+    "createdDate": "2026-06-04",
+    "createdBy": "Priya Shah"
+  },
+  {
+    "id": "RPT-005",
+    "name": "Audit Trail Summary",
+    "type": "Audit",
+    "filters": { "period": "Last 30 Days", "user": "All" },
+    "createdDate": "2026-05-30",
+    "createdBy": "Emily Cruz"
+  },
+  {
+    "id": "RPT-006",
+    "name": "Top Suppliers by Spend",
+    "type": "Vendor",
+    "filters": { "period": "Q2", "limit": 10 },
+    "createdDate": "2026-05-26",
+    "createdBy": "Owen Foster"
+  },
+  {
+    "id": "RPT-007",
+    "name": "Policy Fulfillment Status",
+    "type": "Compliance",
+    "filters": { "status": "Active", "department": "All" },
+    "createdDate": "2026-05-20",
+    "createdBy": "Leo Martin"
+  },
+  {
+    "id": "RPT-008",
+    "name": "Approval Cycle Time",
+    "type": "Operations",
+    "filters": { "period": "Monthly", "threshold": 5 },
+    "createdDate": "2026-05-12",
+    "createdBy": "Daniel Brooks"
+  }
+]

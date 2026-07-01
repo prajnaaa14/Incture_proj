@@ -1,0 +1,506 @@
+[
+  {
+    "id": "REQ-001",
+    "title": "Enterprise software licenses",
+    "department": "IT",
+    "amount": 125000,
+    "status": "Pending",
+    "createdBy": "Daniel Brooks",
+    "createdDate": "2026-05-10",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-10", "by": "Daniel Brooks" }
+    ],
+    "comments": [
+      { "author": "Daniel Brooks", "text": "Need support for next quarter rollout." }
+    ],
+    "attachments": ["license-quote.pdf"]
+  },
+  {
+    "id": "REQ-002",
+    "title": "Packaging material procurement",
+    "department": "Operations",
+    "amount": 88000,
+    "status": "Approved",
+    "createdBy": "Nadia Alvarez",
+    "createdDate": "2026-04-24",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-24", "by": "Nadia Alvarez" },
+      { "step": "Manager Approval", "date": "2026-04-25", "by": "Owen Foster" },
+      { "step": "Finance Review", "date": "2026-04-26", "by": "Asha Rao" }
+    ],
+    "comments": [
+      { "author": "Owen Foster", "text": "Approved for current production cycle." }
+    ],
+    "attachments": ["packaging-specs.pdf"]
+  },
+  {
+    "id": "REQ-003",
+    "title": "Cloud infrastructure refresh",
+    "department": "Engineering",
+    "amount": 214000,
+    "status": "Under Review",
+    "createdBy": "Leo Martin",
+    "createdDate": "2026-05-18",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-18", "by": "Leo Martin" },
+      { "step": "Security Review", "date": "2026-05-19", "by": "Priya Shah" }
+    ],
+    "comments": [
+      { "author": "Priya Shah", "text": "Awaiting final compliance sign-off." }
+    ],
+    "attachments": ["infra-quote.pdf", "security-checklist.pdf"]
+  },
+  {
+    "id": "REQ-004",
+    "title": "Supplier onboarding services",
+    "department": "Procurement",
+    "amount": 54000,
+    "status": "Rejected",
+    "createdBy": "Mina Chen",
+    "createdDate": "2026-03-01",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-03-01", "by": "Mina Chen" },
+      { "step": "Rejected", "date": "2026-03-02", "by": "Asha Rao" }
+    ],
+    "comments": [
+      { "author": "Asha Rao", "text": "Insufficient vendor due diligence." }
+    ],
+    "attachments": ["onboarding-scope.pdf"]
+  },
+  {
+    "id": "REQ-005",
+    "title": "Warehouse automation hardware",
+    "department": "Supply Chain",
+    "amount": 310000,
+    "status": "Pending",
+    "createdBy": "Sara Kim",
+    "createdDate": "2026-06-02",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-06-02", "by": "Sara Kim" }
+    ],
+    "comments": [
+      { "author": "Sara Kim", "text": "Required before Q3 launch." }
+    ],
+    "attachments": ["hardware-specs.pdf"]
+  },
+  {
+    "id": "REQ-006",
+    "title": "Travel and expense software",
+    "department": "Finance",
+    "amount": 67000,
+    "status": "Approved",
+    "createdBy": "James Patel",
+    "createdDate": "2026-04-15",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-15", "by": "James Patel" },
+      { "step": "Approved", "date": "2026-04-16", "by": "Mina Chen" }
+    ],
+    "comments": [
+      { "author": "Mina Chen", "text": "Budget approved for team rollout." }
+    ],
+    "attachments": ["pricing-sheet.pdf"]
+  },
+  {
+    "id": "REQ-007",
+    "title": "Security audit services",
+    "department": "Risk",
+    "amount": 94000,
+    "status": "Under Review",
+    "createdBy": "Emily Cruz",
+    "createdDate": "2026-05-26",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-26", "by": "Emily Cruz" },
+      { "step": "Audit Review", "date": "2026-05-27", "by": "Leo Martin" }
+    ],
+    "comments": [
+      { "author": "Leo Martin", "text": "Pending final scope review." }
+    ],
+    "attachments": ["audit-sow.pdf"]
+  },
+  {
+    "id": "REQ-008",
+    "title": "Employee wellness program",
+    "department": "HR",
+    "amount": 48000,
+    "status": "Pending",
+    "createdBy": "Priya Shah",
+    "createdDate": "2026-06-08",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-06-08", "by": "Priya Shah" }
+    ],
+    "comments": [
+      { "author": "Priya Shah", "text": "Seeking executive sponsor approval." }
+    ],
+    "attachments": ["proposal.pdf"]
+  },
+  {
+    "id": "REQ-009",
+    "title": "Data retention platform",
+    "department": "IT",
+    "amount": 178000,
+    "status": "Approved",
+    "createdBy": "Owen Foster",
+    "createdDate": "2026-04-02",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-02", "by": "Owen Foster" },
+      { "step": "Security Review", "date": "2026-04-03", "by": "Priya Shah" },
+      { "step": "Approved", "date": "2026-04-04", "by": "Asha Rao" }
+    ],
+    "comments": [
+      { "author": "Asha Rao", "text": "Approved for compliance alignment." }
+    ],
+    "attachments": ["retention-plan.pdf"]
+  },
+  {
+    "id": "REQ-010",
+    "title": "Office furniture refresh",
+    "department": "Facilities",
+    "amount": 76000,
+    "status": "Rejected",
+    "createdBy": "Mina Chen",
+    "createdDate": "2026-03-14",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-03-14", "by": "Mina Chen" },
+      { "step": "Rejected", "date": "2026-03-15", "by": "Asha Rao" }
+    ],
+    "comments": [
+      { "author": "Asha Rao", "text": "Budget cap reached for this quarter." }
+    ],
+    "attachments": ["quote-1.pdf"]
+  },
+  {
+    "id": "REQ-011",
+    "title": "Compliance training platform",
+    "department": "Compliance",
+    "amount": 61000,
+    "status": "Pending",
+    "createdBy": "Emily Cruz",
+    "createdDate": "2026-06-11",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-06-11", "by": "Emily Cruz" }
+    ],
+    "comments": [
+      { "author": "Emily Cruz", "text": "Regulatory readiness initiative." }
+    ],
+    "attachments": ["training-demo.pdf"]
+  },
+  {
+    "id": "REQ-012",
+    "title": "Auto parts inventory software",
+    "department": "Supply Chain",
+    "amount": 143000,
+    "status": "Under Review",
+    "createdBy": "Nadia Alvarez",
+    "createdDate": "2026-05-01",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-01", "by": "Nadia Alvarez" },
+      { "step": "Operations Review", "date": "2026-05-02", "by": "Mina Chen" }
+    ],
+    "comments": [
+      { "author": "Mina Chen", "text": "Need cost comparison before approval." }
+    ],
+    "attachments": ["inventory-sow.pdf"]
+  },
+  {
+    "id": "REQ-013",
+    "title": "Contract lifecycle system",
+    "department": "Legal",
+    "amount": 196000,
+    "status": "Approved",
+    "createdBy": "Sara Kim",
+    "createdDate": "2026-04-09",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-09", "by": "Sara Kim" },
+      { "step": "Legal Review", "date": "2026-04-10", "by": "Priya Shah" },
+      { "step": "Approved", "date": "2026-04-11", "by": "Asha Rao" }
+    ],
+    "comments": [
+      { "author": "Priya Shah", "text": "System aligned with compliance policy." }
+    ],
+    "attachments": ["clm-demo.pdf"]
+  },
+  {
+    "id": "REQ-014",
+    "title": "Warehouse monitoring sensors",
+    "department": "Operations",
+    "amount": 132000,
+    "status": "Pending",
+    "createdBy": "Leo Martin",
+    "createdDate": "2026-06-05",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-06-05", "by": "Leo Martin" }
+    ],
+    "comments": [
+      { "author": "Leo Martin", "text": "Urgent for site safety upgrade." }
+    ],
+    "attachments": ["sensor-quote.pdf"]
+  },
+  {
+    "id": "REQ-015",
+    "title": "Vendor risk analytics tool",
+    "department": "Risk",
+    "amount": 87000,
+    "status": "Rejected",
+    "createdBy": "James Patel",
+    "createdDate": "2026-03-22",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-03-22", "by": "James Patel" },
+      { "step": "Rejected", "date": "2026-03-23", "by": "Mina Chen" }
+    ],
+    "comments": [
+      { "author": "Mina Chen", "text": "Duplicate of an existing licensing agreement." }
+    ],
+    "attachments": ["analytics-demo.pdf"]
+  },
+  {
+    "id": "REQ-016",
+    "title": "Managed print services",
+    "department": "Facilities",
+    "amount": 47000,
+    "status": "Approved",
+    "createdBy": "Daniel Brooks",
+    "createdDate": "2026-04-20",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-20", "by": "Daniel Brooks" },
+      { "step": "Approved", "date": "2026-04-21", "by": "Owen Foster" }
+    ],
+    "comments": [
+      { "author": "Owen Foster", "text": "Service costs are within budget." }
+    ],
+    "attachments": ["print-contract.pdf"]
+  },
+  {
+    "id": "REQ-017",
+    "title": "Supplier portal integration",
+    "department": "IT",
+    "amount": 154000,
+    "status": "Under Review",
+    "createdBy": "Priya Shah",
+    "createdDate": "2026-05-14",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-14", "by": "Priya Shah" },
+      { "step": "Security Review", "date": "2026-05-15", "by": "Emily Cruz" }
+    ],
+    "comments": [
+      { "author": "Emily Cruz", "text": "Needs additional vendor security review." }
+    ],
+    "attachments": ["portal-architecture.pdf"]
+  },
+  {
+    "id": "REQ-018",
+    "title": "Renewal of QA testing tools",
+    "department": "Engineering",
+    "amount": 91000,
+    "status": "Pending",
+    "createdBy": "Mina Chen",
+    "createdDate": "2026-06-03",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-06-03", "by": "Mina Chen" }
+    ],
+    "comments": [
+      { "author": "Mina Chen", "text": "Critical for release timeline." }
+    ],
+    "attachments": ["renewal-quote.pdf"]
+  },
+  {
+    "id": "REQ-019",
+    "title": "Environmental compliance audits",
+    "department": "Compliance",
+    "amount": 103000,
+    "status": "Approved",
+    "createdBy": "Leo Martin",
+    "createdDate": "2026-04-28",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-28", "by": "Leo Martin" },
+      { "step": "Approved", "date": "2026-04-29", "by": "Asha Rao" }
+    ],
+    "comments": [
+      { "author": "Asha Rao", "text": "Approved before next regulatory review." }
+    ],
+    "attachments": ["audit-plan.pdf"]
+  },
+  {
+    "id": "REQ-020",
+    "title": "Workplace safety supplies",
+    "department": "Facilities",
+    "amount": 59000,
+    "status": "Under Review",
+    "createdBy": "Nadia Alvarez",
+    "createdDate": "2026-05-20",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-20", "by": "Nadia Alvarez" },
+      { "step": "Safety Review", "date": "2026-05-21", "by": "Emily Cruz" }
+    ],
+    "comments": [
+      { "author": "Emily Cruz", "text": "Pending safety compliance confirmation." }
+    ],
+    "attachments": ["safety-catalog.pdf"]
+  },
+  {
+    "id": "REQ-021",
+    "title": "HRIS upgrade services",
+    "department": "HR",
+    "amount": 136000,
+    "status": "Pending",
+    "createdBy": "Daniel Brooks",
+    "createdDate": "2026-06-09",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-06-09", "by": "Daniel Brooks" }
+    ],
+    "comments": [
+      { "author": "Daniel Brooks", "text": "Requested for new onboarding workflow." }
+    ],
+    "attachments": ["hrs-quote.pdf"]
+  },
+  {
+    "id": "REQ-022",
+    "title": "Business continuity consulting",
+    "department": "Operations",
+    "amount": 118000,
+    "status": "Approved",
+    "createdBy": "Sara Kim",
+    "createdDate": "2026-04-11",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-11", "by": "Sara Kim" },
+      { "step": "Approved", "date": "2026-04-12", "by": "Mina Chen" }
+    ],
+    "comments": [
+      { "author": "Mina Chen", "text": "Approved with cost controls." }
+    ],
+    "attachments": ["bc-proposal.pdf"]
+  },
+  {
+    "id": "REQ-023",
+    "title": "Payment processing platform",
+    "department": "Finance",
+    "amount": 165000,
+    "status": "Under Review",
+    "createdBy": "Owen Foster",
+    "createdDate": "2026-05-17",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-17", "by": "Owen Foster" },
+      { "step": "Finance Review", "date": "2026-05-18", "by": "Asha Rao" }
+    ],
+    "comments": [
+      { "author": "Asha Rao", "text": "Pending vendor security assurance." }
+    ],
+    "attachments": ["payment-platform.pdf"]
+  },
+  {
+    "id": "REQ-024",
+    "title": "Remote site network upgrades",
+    "department": "IT",
+    "amount": 98000,
+    "status": "Pending",
+    "createdBy": "Emily Cruz",
+    "createdDate": "2026-06-12",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-06-12", "by": "Emily Cruz" }
+    ],
+    "comments": [
+      { "author": "Emily Cruz", "text": "Needed for remote operations." }
+    ],
+    "attachments": ["network-quote.pdf"]
+  },
+  {
+    "id": "REQ-025",
+    "title": "Compliance reporting automation",
+    "department": "Compliance",
+    "amount": 72000,
+    "status": "Approved",
+    "createdBy": "James Patel",
+    "createdDate": "2026-04-18",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-18", "by": "James Patel" },
+      { "step": "Approved", "date": "2026-04-19", "by": "Priya Shah" }
+    ],
+    "comments": [
+      { "author": "Priya Shah", "text": "Approval aligned with upcoming audit cycle." }
+    ],
+    "attachments": ["automation-demo.pdf"]
+  },
+  {
+    "id": "REQ-026",
+    "title": "Custom dashboard development",
+    "department": "Engineering",
+    "amount": 151000,
+    "status": "Rejected",
+    "createdBy": "Nadia Alvarez",
+    "createdDate": "2026-03-19",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-03-19", "by": "Nadia Alvarez" },
+      { "step": "Rejected", "date": "2026-03-20", "by": "Mina Chen" }
+    ],
+    "comments": [
+      { "author": "Mina Chen", "text": "Scope exceeds current roadmap." }
+    ],
+    "attachments": ["dashboard-scope.pdf"]
+  },
+  {
+    "id": "REQ-027",
+    "title": "Policy management workflow",
+    "department": "Compliance",
+    "amount": 64000,
+    "status": "Under Review",
+    "createdBy": "Leo Martin",
+    "createdDate": "2026-05-12",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-12", "by": "Leo Martin" },
+      { "step": "Compliance Review", "date": "2026-05-13", "by": "Emily Cruz" }
+    ],
+    "comments": [
+      { "author": "Emily Cruz", "text": "Awaiting policy owner validation." }
+    ],
+    "attachments": ["policy-guide.pdf"]
+  },
+  {
+    "id": "REQ-028",
+    "title": "External audit support services",
+    "department": "Audit",
+    "amount": 112000,
+    "status": "Pending",
+    "createdBy": "Priya Shah",
+    "createdDate": "2026-06-13",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-06-13", "by": "Priya Shah" }
+    ],
+    "comments": [
+      { "author": "Priya Shah", "text": "Requested for year-end audits." }
+    ],
+    "attachments": ["audit-support.pdf"]
+  },
+  {
+    "id": "REQ-029",
+    "title": "Internal communications platform",
+    "department": "HR",
+    "amount": 83000,
+    "status": "Approved",
+    "createdBy": "Daniel Brooks",
+    "createdDate": "2026-04-23",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-04-23", "by": "Daniel Brooks" },
+      { "step": "Approved", "date": "2026-04-24", "by": "Asha Rao" }
+    ],
+    "comments": [
+      { "author": "Asha Rao", "text": "Approved for global pilot deployment." }
+    ],
+    "attachments": ["comms-platform.pdf"]
+  },
+  {
+    "id": "REQ-030",
+    "title": "Supplier sustainability review",
+    "department": "Sustainability",
+    "amount": 76000,
+    "status": "Under Review",
+    "createdBy": "Sara Kim",
+    "createdDate": "2026-05-29",
+    "approvalHistory": [
+      { "step": "Submitted", "date": "2026-05-29", "by": "Sara Kim" },
+      { "step": "Compliance Review", "date": "2026-05-30", "by": "James Patel" }
+    ],
+    "comments": [
+      { "author": "James Patel", "text": "Needs ESG evidence before final decision." }
+    ],
+    "attachments": ["sustainability-review.pdf"]
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "NTF-001",
+    "message": "New approval request requires your review.",
+    "type": "Approval",
+    "priority": "High",
+    "isRead": false,
+    "timestamp": "2026-06-29T09:10:00"
+  },
+  {
+    "id": "NTF-002",
+    "message": "Supplier risk score increased for Northwind Supplies.",
+    "type": "Risk",
+    "priority": "High",
+    "isRead": false,
+    "timestamp": "2026-06-29T08:45:00"
+  },
+  {
+    "id": "NTF-003",
+    "message": "Compliance checklist for Q3 is due tomorrow.",
+    "type": "Compliance",
+    "priority": "Medium",
+    "isRead": true,
+    "timestamp": "2026-06-28T17:30:00"
+  },
+  {
+    "id": "NTF-004",
+    "message": "System maintenance window scheduled for tonight.",
+    "type": "System",
+    "priority": "Low",
+    "isRead": true,
+    "timestamp": "2026-06-28T16:20:00"
+  },
+  {
+    "id": "NTF-005",
+    "message": "Vendor onboarding package was updated.",
+    "type": "Approval",
+    "priority": "Medium",
+    "isRead": false,
+    "timestamp": "2026-06-28T14:05:00"
+  },
+  {
+    "id": "NTF-006",
+    "message": "New policy exception requires action.",
+    "type": "Compliance",
+    "priority": "High",
+    "isRead": false,
+    "timestamp": "2026-06-27T12:15:00"
+  },
+  {
+    "id": "NTF-007",
+    "message": "Risk heatmap refreshed with latest findings.",
+    "type": "Risk",
+    "priority": "Medium",
+    "isRead": true,
+    "timestamp": "2026-06-27T11:40:00"
+  },
+  {
+    "id": "NTF-008",
+    "message": "Audit trail export completed successfully.",
+    "type": "System",
+    "priority": "Low",
+    "isRead": true,
+    "timestamp": "2026-06-26T18:00:00"
+  },
+  {
+    "id": "NTF-009",
+    "message": "Three procurement requests are waiting for approval.",
+    "type": "Approval",
+    "priority": "High",
+    "isRead": false,
+    "timestamp": "2026-06-26T10:30:00"
+  },
+  {
+    "id": "NTF-010",
+    "message": "New compliance incident was logged.",
+    "type": "Compliance",
+    "priority": "High",
+    "isRead": false,
+    "timestamp": "2026-06-25T15:10:00"
+  },
+  {
+    "id": "NTF-011",
+    "message": "A vendor contract is nearing expiration.",
+    "type": "Risk",
+    "priority": "Medium",
+    "isRead": true,
+    "timestamp": "2026-06-24T09:20:00"
+  },
+  {
+    "id": "NTF-012",
+    "message": "User access review has been completed.",
+    "type": "System",
+    "priority": "Low",
+    "isRead": true,
+    "timestamp": "2026-06-23T13:45:00"
+  },
+  {
+    "id": "NTF-013",
+    "message": "Manual approval override was requested.",
+    "type": "Approval",
+    "priority": "Medium",
+    "isRead": false,
+    "timestamp": "2026-06-22T08:55:00"
+  },
+  {
+    "id": "NTF-014",
+    "message": "New risk observation added to dashboard.",
+    "type": "Risk",
+    "priority": "Medium",
+    "isRead": true,
+    "timestamp": "2026-06-21T16:40:00"
+  },
+  {
+    "id": "NTF-015",
+    "message": "Scheduled report export is ready to download.",
+    "type": "System",
+    "priority": "Low",
+    "isRead": false,
+    "timestamp": "2026-06-20T11:05:00"
+  }
+]

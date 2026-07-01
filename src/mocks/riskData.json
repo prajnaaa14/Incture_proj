@@ -1,0 +1,41 @@
+{
+  "matrix": {
+    "likelihood": ["Rare", "Unlikely", "Possible", "Likely", "Almost Certain"],
+    "impact": ["Insignificant", "Minor", "Moderate", "Major", "Severe"],
+    "values": [
+      [1, 2, 3, 4, 5],
+      [2, 3, 4, 5, 6],
+      [3, 4, 5, 6, 7],
+      [4, 5, 6, 7, 8],
+      [5, 6, 7, 8, 9]
+    ]
+  },
+  "trend": [
+    { "month": "Jan", "value": 4.1 },
+    { "month": "Feb", "value": 4.4 },
+    { "month": "Mar", "value": 4.7 },
+    { "month": "Apr", "value": 4.2 },
+    { "month": "May", "value": 5.1 },
+    { "month": "Jun", "value": 4.8 },
+    { "month": "Jul", "value": 5.3 },
+    { "month": "Aug", "value": 5.6 },
+    { "month": "Sep", "value": 5.2 },
+    { "month": "Oct", "value": 5.8 },
+    { "month": "Nov", "value": 6.1 },
+    { "month": "Dec", "value": 5.9 }
+  ],
+  "distribution": [
+    { "category": "Supplier", "value": 32 },
+    { "category": "Compliance", "value": 24 },
+    { "category": "Operational", "value": 19 },
+    { "category": "Financial", "value": 14 },
+    { "category": "Cyber", "value": 11 }
+  ],
+  "riskList": [
+    { "id": "R-001", "title": "Supplier concentration in single region", "severity": "High", "status": "Open" },
+    { "id": "R-002", "title": "Delayed regulatory filings", "severity": "Medium", "status": "Monitoring" },
+    { "id": "R-003", "title": "Unpatched ERP access points", "severity": "High", "status": "Mitigating" },
+    { "id": "R-004", "title": "Quarterly forecast variance", "severity": "Low", "status": "Resolved" },
+    { "id": "R-005", "title": "Vendor payment fraud exposure", "severity": "High", "status": "Open" }
+  ]
+}
