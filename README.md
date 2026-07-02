@@ -2,8 +2,8 @@
 
 An enterprise-grade frontend application designed to manage procurement workflows, vendor governance, risk posture, and corporate compliance.
 
-**Live URL**: `[Insert your Netlify URL here]`  
-**GitHub Repository**: `[Insert your GitHub Repo URL here]`
+**Live URL**: `inctureproj.netlify.app`  
+**GitHub Repository**: `https://github.com/prajnaaa14/Incture_proj.git`
 
 ---
 
@@ -27,10 +27,10 @@ The application utilizes strict Role-Based Access Control (RBAC). Log in with th
 
 | Role | Email | Password |
 | :--- | :--- | :--- |
-| **Admin** | `admin@enterprise.com` | `Password123!` |
-| **Manager** | `manager@enterprise.com` | `Password123!` |
-| **Employee** | `employee@enterprise.com` | `Password123!` |
-| **Auditor** | `auditor@enterprise.com` | `Password123!` |
+| **Admin** | `admin@enterprise.com` | `password123` |
+| **Manager** | `manager@enterprise.com` | `password123` |
+| **Employee** | `employee@enterprise.com` | `password123` |
+| **Auditor** | `auditor@enterprise.com` | `password123` |
 
 ---
 
