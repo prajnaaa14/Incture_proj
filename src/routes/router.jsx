@@ -75,7 +75,7 @@ const router = createBrowserRouter([
       { path: 'procurement/:id', element: withProtectedRoute(<ProcurementDetailPage />, ['admin', 'manager', 'employee']) },
       { path: 'vendors', element: withProtectedRoute(<VendorsPage />, ['admin', 'manager']) },
       { path: 'vendors/:id', element: withProtectedRoute(<VendorDetailPage />, ['admin', 'manager']) },
-      { path: 'risk', element: withProtectedRoute(<RiskPage />, ['admin', 'auditor']) },
+      { path: 'risk', element: withProtectedRoute(<RiskPage />, ['admin', 'manager', 'employee', 'auditor']) },
       { path: 'compliance', element: withProtectedRoute(<CompliancePage />, ['admin', 'manager', 'employee', 'auditor']) },
       { path: 'audit', element: withProtectedRoute(<AuditPage />, ['admin', 'auditor']) },
       { path: 'approvals', element: withProtectedRoute(<ApprovalsPage />, ['admin', 'manager']) },

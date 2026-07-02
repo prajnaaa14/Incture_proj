@@ -140,7 +140,7 @@ const ProcurementPage = () => {
   const exportCsv = useCallback(() => {
     const rows = sortedRows.map((request) => ({
       id: request.id,
-      title: request.title,
+      title: `"${request.title || ''}"`,
       department: request.department,
       amount: request.amount,
       status: request.status,
@@ -158,7 +158,10 @@ const ProcurementPage = () => {
     const link = document.createElement('a')
     link.href = url
     link.download = 'procurement-requests.csv'
+    
+    document.body.appendChild(link)
     link.click()
+    document.body.removeChild(link)
     URL.revokeObjectURL(url)
   }, [sortedRows])
 

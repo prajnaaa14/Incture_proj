@@ -69,11 +69,15 @@ const NotificationsPage = () => {
   const [showUnreadOnly, setShowUnreadOnly] = useState(false)
   const [loading, setLoading] = useState(true)
 
+  const isInitialMount = useMemo(() => notifications.length === 0, [])
+
   useEffect(() => {
-    dispatch(fetchNotifications())
+    if (isInitialMount) {
+      dispatch(fetchNotifications())
+    }
     const timer = window.setTimeout(() => setLoading(false), 400)
     return () => window.clearTimeout(timer)
-  }, [dispatch])
+  }, [dispatch, isInitialMount])
 
   const filteredNotifications = useMemo(() => {
     return notifications.filter((notification) => {
