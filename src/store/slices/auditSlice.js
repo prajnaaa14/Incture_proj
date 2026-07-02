@@ -34,7 +34,7 @@ const auditSlice = createSlice({
       })
       .addCase(fetchAuditTrail.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.entries = action.payload.entries
+        state.entries = action.payload
       })
       .addCase(fetchAuditTrail.rejected, (state, action) => {
         state.status = 'failed'
