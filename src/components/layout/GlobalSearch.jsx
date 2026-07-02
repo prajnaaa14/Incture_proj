@@ -25,7 +25,7 @@ const GlobalSearch = () => {
     const query = inputValue.toLowerCase()
 
     const requestMatches = requests
-      .filter((r) => r.title.toLowerCase().includes(query) || r.id.toLowerCase().includes(query))
+      .filter((r) => r?.title?.toLowerCase().includes(query) || r?.id?.toLowerCase().includes(query))
       .map((r) => ({
         type: 'Procurement',
         id: r.id,
@@ -36,7 +36,7 @@ const GlobalSearch = () => {
       }))
 
     const vendorMatches = vendors
-      .filter((v) => v.name.toLowerCase().includes(query) || v.id.toLowerCase().includes(query))
+      .filter((v) => v?.name?.toLowerCase().includes(query) || v?.id?.toLowerCase().includes(query))
       .map((v) => ({
         type: 'Vendor',
         id: v.id,
@@ -68,7 +68,7 @@ const GlobalSearch = () => {
         options={options}
         value={null}
         groupBy={(option) => option.type}
-        getOptionLabel={(option) => option.title}
+        getOptionLabel={(option) => (typeof option === 'string' ? option : option?.title || '')}
         onChange={handleSelect}
         filterOptions={(x) => x} 
         renderInput={(params) => (
