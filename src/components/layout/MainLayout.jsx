@@ -83,13 +83,13 @@ const MainLayout = ({ children, actionSlot }) => {
   const visibleNavItems = navItems.filter((item) => {
     const pathKey = item.path.replace('/', '')
     if (role === 'employee') {
-      return ['dashboard', 'procurement', 'risk', 'compliance', 'notifications', 'settings'].includes(pathKey)
+      return ['dashboard', 'procurement'].includes(pathKey)
     }
     if (role === 'manager') {
-      return ['dashboard', 'approvals', 'vendors', 'procurement', 'risk', 'compliance', 'notifications', 'reports', 'settings'].includes(pathKey)
+      return ['dashboard', 'approvals'].includes(pathKey)
     }
     if (role === 'auditor') {
-      return ['dashboard', 'audit', 'risk', 'compliance', 'reports', 'settings'].includes(pathKey)
+      return ['audit', 'reports'].includes(pathKey)
     }
     return true
   })

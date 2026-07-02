@@ -35,6 +35,14 @@ const PageLoadingFallback = () => (
 const withSuspense = (element) => <Suspense fallback={<PageLoadingFallback />}>{element}</Suspense>
 const withProtectedRoute = (element, allowedRoles) => withSuspense(<RouteGuard allowedRoles={allowedRoles}>{element}</RouteGuard>)
 
+import { useSelector } from 'react-redux'
+
+const RootRedirect = () => {
+  const user = useSelector((state) => state.auth.user)
+  if (user?.role === 'auditor') return <Navigate to="/audit" replace />
+  return <Navigate to="/dashboard" replace />
+}
+
 const router = createBrowserRouter([
   {
     path: '/login',
@@ -57,7 +65,7 @@ const router = createBrowserRouter([
     element: (
       <RouteGuard>
         <MainLayout>
-          <Navigate to="/dashboard" replace />
+          <RootRedirect />
         </MainLayout>
       </RouteGuard>
     ),
