@@ -44,6 +44,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { logout } from '../../store/slices/authSlice'
 import { useThemeMode } from '../../theme/ThemeModeContext'
+import GlobalSearch from './GlobalSearch'
 
 const navItems = [
   { label: 'Dashboard', path: '/dashboard', icon: <DashboardRounded /> },
@@ -80,8 +81,15 @@ const MainLayout = ({ children, actionSlot }) => {
   const effectiveSidebarWidth = isMobile ? (mobileOpen ? drawerWidth : 0) : sidebarWidth
 
   const visibleNavItems = navItems.filter((item) => {
+    const pathKey = item.path.replace('/', '')
     if (role === 'employee') {
-      return ['dashboard', 'procurement', 'notifications', 'settings'].includes(item.path.replace('/', ''))
+      return ['dashboard', 'procurement', 'notifications', 'settings'].includes(pathKey)
+    }
+    if (role === 'manager') {
+      return ['dashboard', 'approvals', 'vendors', 'procurement', 'notifications', 'reports', 'settings'].includes(pathKey)
+    }
+    if (role === 'auditor') {
+      return ['dashboard', 'audit', 'risk', 'reports', 'settings'].includes(pathKey)
     }
     return true
   })
@@ -147,13 +155,21 @@ const MainLayout = ({ children, actionSlot }) => {
               SAP-inspired operations workspace
             </Typography>
           </Box>
+          
+          <GlobalSearch />
+          
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <IconButton color="inherit" onClick={toggleMode} aria-label="toggle color mode">
               {mode === 'dark' ? <Brightness7Rounded /> : <Brightness4Rounded />}
             </IconButton>
-            <Badge badgeContent={unreadNotificationCount} color="error">
-              <NotificationsRounded />
-            </Badge>
+            <IconButton color="inherit" onClick={() => navigate('/notifications')} aria-label="notifications">
+              <Badge badgeContent={unreadNotificationCount} color="error">
+                <NotificationsRounded />
+              </Badge>
+            </IconButton>
+            <IconButton color="inherit" onClick={() => navigate('/settings')} aria-label="profile">
+              <ManageAccountsRounded />
+            </IconButton>
             {actionSlot}
             <Button
               color="inherit"

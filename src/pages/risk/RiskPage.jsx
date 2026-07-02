@@ -172,7 +172,8 @@ const RiskPage = () => {
               </Typography>
               <Box sx={{ width: '100%', height: 280 }}>
                 <ResponsiveContainer>
-                  <LineChart data={riskData.trend}>
+                  <LineChart data={riskData.trend} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="month" />
                     <YAxis domain={[3, 7]} />
                     <Tooltip />

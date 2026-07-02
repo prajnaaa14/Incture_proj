@@ -2,101 +2,41 @@
   {
     "id": 1,
     "name": "Asha Rao",
-    "email": "asha.rao@enterprise.com",
+    "email": "admin@enterprise.com",
     "role": "admin",
     "department": "Procurement",
     "avatar": "https://i.pravatar.cc/150?img=32",
     "status": "active",
-    "password": "Admin123!"
+    "password": "password123"
   },
   {
     "id": 2,
     "name": "Mina Chen",
-    "email": "mina.chen@enterprise.com",
+    "email": "manager@enterprise.com",
     "role": "manager",
     "department": "Operations",
     "avatar": "https://i.pravatar.cc/150?img=33",
     "status": "active",
-    "password": "Manager123!"
+    "password": "password123"
   },
   {
     "id": 3,
     "name": "Daniel Brooks",
-    "email": "daniel.brooks@enterprise.com",
+    "email": "employee@enterprise.com",
     "role": "employee",
     "department": "Finance",
     "avatar": "https://i.pravatar.cc/150?img=34",
     "status": "active",
-    "password": "Employee123!"
+    "password": "password123"
   },
   {
     "id": 4,
-    "name": "Priya Shah",
-    "email": "priya.shah@enterprise.com",
-    "role": "compliance_officer",
-    "department": "Compliance",
-    "avatar": "https://i.pravatar.cc/150?img=35",
-    "status": "inactive",
-    "password": "Compliance123!"
-  },
-  {
-    "id": 5,
     "name": "Leo Martin",
-    "email": "leo.martin@enterprise.com",
+    "email": "auditor@enterprise.com",
     "role": "auditor",
     "department": "Internal Audit",
     "avatar": "https://i.pravatar.cc/150?img=36",
     "status": "active",
-    "password": "Auditor123!"
-  },
-  {
-    "id": 6,
-    "name": "Nadia Alvarez",
-    "email": "nadia.alvarez@enterprise.com",
-    "role": "employee",
-    "department": "Supply Chain",
-    "avatar": "https://i.pravatar.cc/150?img=37",
-    "status": "active",
-    "password": "Employee123!"
-  },
-  {
-    "id": 7,
-    "name": "Owen Foster",
-    "email": "owen.foster@enterprise.com",
-    "role": "manager",
-    "department": "Procurement",
-    "avatar": "https://i.pravatar.cc/150?img=38",
-    "status": "active",
-    "password": "Manager123!"
-  },
-  {
-    "id": 8,
-    "name": "Sara Kim",
-    "email": "sara.kim@enterprise.com",
-    "role": "employee",
-    "department": "Legal",
-    "avatar": "https://i.pravatar.cc/150?img=39",
-    "status": "pending",
-    "password": "Employee123!"
-  },
-  {
-    "id": 9,
-    "name": "James Patel",
-    "email": "james.patel@enterprise.com",
-    "role": "compliance_officer",
-    "department": "Risk",
-    "avatar": "https://i.pravatar.cc/150?img=40",
-    "status": "active",
-    "password": "Compliance123!"
-  },
-  {
-    "id": 10,
-    "name": "Emily Cruz",
-    "email": "emily.cruz@enterprise.com",
-    "role": "auditor",
-    "department": "Audit",
-    "avatar": "https://i.pravatar.cc/150?img=41",
-    "status": "active",
-    "password": "Auditor123!"
+    "password": "password123"
   }
 ]

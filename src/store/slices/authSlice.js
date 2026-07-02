@@ -30,9 +30,13 @@ export const bootstrapAuth = createAsyncThunk('auth/bootstrapAuth', async (_, { 
 export const loginThunk = createAsyncThunk('auth/loginThunk', async ({ email, password }, { dispatch, rejectWithValue }) => {
   try {
     await simulateDelay()
-    const matchedUser = users.find((user) => user.email === email)
+    const cleanEmail = email?.trim().toLowerCase() || ''
+    const cleanPassword = password?.trim() || ''
 
-    if (!matchedUser || matchedUser.password !== password) {
+    const matchedUser = users.find((user) => user.email.toLowerCase() === cleanEmail)
+
+    if (!matchedUser || matchedUser.password !== cleanPassword) {
+      console.warn('Login Failed:', { inputEmail: cleanEmail, inputPassword: cleanPassword, userFound: !!matchedUser })
       const message = 'Invalid email or password'
       dispatch(pushSnackbar({ message, severity: 'error' }))
       return rejectWithValue(message)

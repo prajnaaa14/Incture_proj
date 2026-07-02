@@ -1,95 +1,77 @@
-# Procurement Enterprise Console
+# e-GRCP: Enterprise Governance, Risk, and Compliance Platform
 
-A modern enterprise-style React application built with Vite, Material UI, Redux Toolkit, React Router, and Recharts. This project simulates a procurement and operations command center with authentication, dashboards, workflow modules, and responsive UI patterns.
+An enterprise-grade frontend application designed to manage procurement workflows, vendor governance, risk posture, and corporate compliance.
 
-## Overview
+**Live URL**: `[Insert your Netlify URL here]`  
+**GitHub Repository**: `[Insert your GitHub Repo URL here]`
 
-This application provides a polished admin-style experience for managing procurement activities, vendor governance, compliance tracking, approvals, notifications, and reporting within a fictional enterprise environment.
+---
 
-## Features
+## 🏗 Technology Stack
 
-- Responsive enterprise dashboard with KPI summaries and charts
-- Protected authentication flow with login, forgot password, and reset password pages
-- Procurement workspace with search, filters, and detail views
-- Vendor governance and risk visibility modules
-- Compliance, audit, approvals, notifications, and reporting pages
-- Snackbar notifications, loading states, and confirmation dialogs
-- Role-based access and route protection
-- Redux-powered state management with persistence support
+- **Core**: React 19, Vite
+- **Routing**: React Router v6 (Nested routes, Protected routes, Role-Based Route Guards)
+- **State Management**: Redux Toolkit & React-Redux
+- **Data Persistence**: Redux Persist (localStorage caching)
+- **UI & Layout**: Material-UI (MUI v5)
+- **Charting**: Recharts
+- **Forms & Validation**: React Hook Form, Yup
+- **Networking/HTTP**: Axios (Centralized `apiClient.js` with Interceptors)
+- **Data Strategy**: Mock JSON Services & Simulated Async APIs (`createAsyncThunk`)
 
-## Tech Stack
+---
 
-- React 19
-- Vite
-- Material UI
-- Redux Toolkit
-- React Router DOM
-- Axios
-- React Hook Form
-- Yup
-- Recharts
-- Jest and React Testing Library
+## 🔑 Demo Credentials (Mock Users)
 
-## Getting Started
+The application utilizes strict Role-Based Access Control (RBAC). Log in with the following accounts to experience dynamic dashboard filtering and route protection.
 
-### Prerequisites
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** | `admin@enterprise.com` | `Password123!` |
+| **Manager** | `manager@enterprise.com` | `Password123!` |
+| **Employee** | `employee@enterprise.com` | `Password123!` |
+| **Auditor** | `auditor@enterprise.com` | `Password123!` |
 
-- Node.js 18+
-- npm or yarn
+---
 
-### Installation
+## 📦 Implemented Modules
 
+1. **Authentication (Module 1)**: Login, Forgot Password, Reset Password, and Session Expiry simulated flows.
+2. **Executive Dashboard (Module 2)**: Business overview with KPI cards, activity timelines, and real-time interactive charting.
+3. **Procurement Workspace (Module 3)**: Request submission workflows, approval history, audit logging, and data grid filtering.
+4. **Vendor Governance (Module 4)**: Supplier list filtering and dedicated Vendor profiles showing risk scores, documents, and history.
+5. **Risk Center (Module 5)**: 5x5 Likelihood vs. Impact Heat Map, risk tracking grids, and category distributions.
+6. **Compliance Center (Module 6)**: Tracking for open policy violations, missing documents, and expiring certifications.
+7. **Audit Center (Module 7)**: Chronological system logs, user activity histories, and security logs with Export (PDF/CSV) capabilities.
+8. **Approval Workbench (Module 8)**: Dedicated queues for Managers to Approve, Reject, Delegate, or Send Back pending procurement requests.
+9. **Notification Center (Module 9)**: Real-time application alert hub with priority indicators and read/unread filtering.
+10. **Reporting Center (Module 10)**: Snapshot exports of system modules into CSV and Excel formats.
+11. **User Settings (Module 11)**: Configurable user preferences including Dark/Light mode theme switching and profile administration.
+
+---
+
+## 🛠 Local Development Instructions
+
+### 1. Install Dependencies
 ```bash
 npm install
 ```
 
-### Run locally
-
+### 2. Start the Development Server
 ```bash
 npm run dev
 ```
 
-### Build for production
-
+### 3. Build for Production (Netlify Deployment)
 ```bash
 npm run build
 ```
+*(Note: A `public/_redirects` file is included in this repository to automatically handle SPA client-side routing on Netlify).*
 
-### Run tests
+---
 
-```bash
-npm test -- --runInBand
-```
+## 🛡 System Architecture Highlights
 
-## Demo Login Credentials
-
-The app uses mock users for demonstration purposes.
-
-- Admin: ash a.rao@enterprise.com / Admin123!
-- Manager: mina.chen@enterprise.com / Manager123!
-- Employee: daniel.brooks@enterprise.com / Employee123!
-- Compliance Officer: priya.shah@enterprise.com / Compliance123!
-- Auditor: leo.martin@enterprise.com / Auditor123!
-
-## Deployment
-
-The project is configured for deployment on Netlify.
-inctureproj.netlify.app
-
-### Netlify build settings
-
-- Build command: npm run build
-- Publish directory: dist
-
-## Project Structure
-
-- src/pages for application pages
-- src/components for reusable UI components
-- src/store for Redux slices and store setup
-- src/services for API integration
-- src/mocks for mock data
-- src/routes for routing configuration
-
-## Notes
-
-This application is designed as a demo/prototype enterprise console and uses mock data rather than a live backend.
+- **Global Error Handling**: Integrated `GlobalErrorBoundary.jsx` prevents the application from crashing out by rendering a graceful fallback UI on unexpected render failures.
+- **API Interceptors**: Integrated `apiClient.js` automatically injects Auth Bearer tokens into headers and centralizes error handling (e.g., auto-logout on `401 Unauthorized` responses).
+- **Responsive Enterprise Design**: Leverages standard layout architectures (Header/Sidebar/Main Content) mirroring industry-standard platforms like SAP, ServiceNow, and Salesforce.

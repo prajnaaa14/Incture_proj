@@ -1,4 +1,5 @@
 import {
+  AddRounded,
   DownloadRounded,
   OpenInNewRounded,
   SearchRounded,
@@ -8,6 +9,10 @@ import {
   Box,
   Button,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   FormControl,
   InputLabel,
   MenuItem,
@@ -26,9 +31,9 @@ import {
   Typography,
 } from '@mui/material'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProcurementPipeline } from '../../store/slices/procurementSlice'
+import { pushSnackbar } from '../../store/slices/uiSlice'
 
 const statusColors = {
   Pending: 'warning',
@@ -62,6 +67,9 @@ const ProcurementPage = () => {
   const [endDate, setEndDate] = useState('')
   const [sortConfig, setSortConfig] = useState({ key: 'createdDate', direction: 'desc' })
   const [page, setPage] = useState(1)
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
+  const [newRequest, setNewRequest] = useState({ title: '', amount: '', department: '' })
+
   const dispatch = useDispatch()
   const { items: requests, status } = useSelector((state) => state.procurement)
   const loading = status === 'loading' || status === 'idle'
@@ -92,7 +100,7 @@ const ProcurementPage = () => {
 
       return matchesSearch && matchesStatus && matchesStart && matchesEnd
     })
-  }, [search, statusFilter, startDate, endDate])
+  }, [search, statusFilter, startDate, endDate, requests])
 
   const sortedRows = useMemo(() => {
     const rows = [...filteredRows]
@@ -154,15 +162,30 @@ const ProcurementPage = () => {
     URL.revokeObjectURL(url)
   }, [sortedRows])
 
+  const handleCreateSubmit = () => {
+    if (!newRequest.title || !newRequest.amount || !newRequest.department) {
+      dispatch(pushSnackbar({ message: 'Please fill in all fields', severity: 'warning' }))
+      return
+    }
+    dispatch(pushSnackbar({ message: 'Procurement request submitted successfully!', severity: 'success' }))
+    setCreateDialogOpen(false)
+    setNewRequest({ title: '', amount: '', department: '' })
+  }
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      <Box>
-        <Typography variant="h4" fontWeight={700} gutterBottom>
-          Procurement Workspace
-        </Typography>
-        <Typography color="text.secondary">
-          Review requests, track approvals, and manage procurement activity.
-        </Typography>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2 }}>
+        <Box>
+          <Typography variant="h4" fontWeight={700} gutterBottom>
+            Procurement Workspace
+          </Typography>
+          <Typography color="text.secondary">
+            Review requests, track approvals, and manage procurement activity.
+          </Typography>
+        </Box>
+        <Button variant="contained" size="large" startIcon={<AddRounded />} onClick={() => setCreateDialogOpen(true)}>
+          Create Request
+        </Button>
       </Box>
 
       <Paper sx={{ p: 2 }}>
@@ -190,7 +213,7 @@ const ProcurementPage = () => {
           <TextField label="From" type="date" size="small" value={startDate} onChange={(event) => setStartDate(event.target.value)} InputLabelProps={{ shrink: true }} />
           <TextField label="To" type="date" size="small" value={endDate} onChange={(event) => setEndDate(event.target.value)} InputLabelProps={{ shrink: true }} />
 
-          <Button variant="outlined" startIcon={<DownloadRounded />} onClick={exportCsv}>
+          <Button variant="outlined" startIcon={<DownloadRounded />} onClick={exportCsv} sx={{ minWidth: 'auto', whiteSpace: 'nowrap' }}>
             Export CSV
           </Button>
         </Stack>
@@ -237,16 +260,60 @@ const ProcurementPage = () => {
         </Table>
       </TableContainer>
 
-      {sortedRows.length === 0 ? (
+      {sortedRows.length === 0 && !loading ? (
         <Typography color="text.secondary">No requests match the current filters.</Typography>
       ) : (
         <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems="center" spacing={2}>
           <Typography variant="body2" color="text.secondary">
             Showing {paginatedRows.length} of {sortedRows.length} requests
           </Typography>
-          <Pagination count={totalPages} page={page - 1} onChange={(_, value) => setPage(value + 1)} color="primary" />
+          <Pagination count={totalPages} page={page} onChange={(_, value) => setPage(value)} color="primary" />
         </Stack>
       )}
+
+      <Dialog open={createDialogOpen} onClose={() => setCreateDialogOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>Create Procurement Request</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+            Submit a new requisition for manager approval.
+          </Typography>
+          <Stack spacing={2}>
+            <TextField 
+              label="Request Title" 
+              fullWidth 
+              value={newRequest.title} 
+              onChange={(e) => setNewRequest({ ...newRequest, title: e.target.value })} 
+            />
+            <TextField 
+              label="Estimated Amount ($)" 
+              type="number" 
+              fullWidth 
+              value={newRequest.amount} 
+              onChange={(e) => setNewRequest({ ...newRequest, amount: e.target.value })} 
+            />
+            <FormControl fullWidth>
+              <InputLabel>Department</InputLabel>
+              <Select 
+                value={newRequest.department} 
+                label="Department" 
+                onChange={(e) => setNewRequest({ ...newRequest, department: e.target.value })}
+              >
+                <MenuItem value="IT">IT</MenuItem>
+                <MenuItem value="Operations">Operations</MenuItem>
+                <MenuItem value="Finance">Finance</MenuItem>
+                <MenuItem value="HR">HR</MenuItem>
+                <MenuItem value="Legal">Legal</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ p: 2, pt: 0 }}>
+          <Button onClick={() => setCreateDialogOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleCreateSubmit}>
+            Submit Request
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }
