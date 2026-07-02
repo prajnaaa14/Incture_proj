@@ -66,6 +66,7 @@ const GlobalSearch = () => {
         inputValue={inputValue}
         onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
         options={options}
+        value={null}
         groupBy={(option) => option.type}
         getOptionLabel={(option) => option.title}
         onChange={handleSelect}
@@ -100,26 +101,29 @@ const GlobalSearch = () => {
             }}
           />
         )}
-        renderOption={(props, option) => (
-          <ListItem {...props} disablePadding>
-            <ListItemButton sx={{ py: 1 }}>
-              <ListItemIcon sx={{ minWidth: 36 }}>{option.icon}</ListItemIcon>
-              <ListItemText
-                primary={
-                  <Typography variant="body2" fontWeight={500}>
-                    {option.title}
-                  </Typography>
-                }
-                secondary={
-                  <Typography variant="caption" color="text.secondary">
-                    {option.id} • {option.subtitle}
-                  </Typography>
-                }
-              />
-              <OpenInNewRounded sx={{ fontSize: 16, color: 'text.secondary' }} />
-            </ListItemButton>
-          </ListItem>
-        )}
+        renderOption={(props, option) => {
+          const { key, ...otherProps } = props;
+          return (
+            <Box component="li" key={key} {...otherProps} sx={{ p: '0 !important' }}>
+              <ListItemButton sx={{ py: 1, width: '100%' }}>
+                <ListItemIcon sx={{ minWidth: 36 }}>{option.icon}</ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography variant="body2" fontWeight={500}>
+                      {option.title}
+                    </Typography>
+                  }
+                  secondary={
+                    <Typography variant="caption" color="text.secondary">
+                      {option.id} • {option.subtitle}
+                    </Typography>
+                  }
+                />
+                <OpenInNewRounded sx={{ fontSize: 16, color: 'text.secondary' }} />
+              </ListItemButton>
+            </Box>
+          );
+        }}
         noOptionsText={inputValue ? "No results found" : "Type to search"}
       />
     </Box>
