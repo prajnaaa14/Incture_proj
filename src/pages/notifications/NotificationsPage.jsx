@@ -69,7 +69,7 @@ const NotificationsPage = () => {
   const [showUnreadOnly, setShowUnreadOnly] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  const isInitialMount = useMemo(() => notifications.length === 0, [])
+  const isInitialMount = useMemo(() => !notifications || notifications.length === 0, [])
 
   useEffect(() => {
     if (isInitialMount) {
@@ -80,7 +80,7 @@ const NotificationsPage = () => {
   }, [dispatch, isInitialMount])
 
   const filteredNotifications = useMemo(() => {
-    return notifications.filter((notification) => {
+    return (notifications || []).filter((notification) => {
       const matchesType = filter === 'All' || notification.type === filter
       const isRead = Boolean(notification.read ?? notification.isRead)
       const matchesReadState = !showUnreadOnly || !isRead
@@ -88,7 +88,7 @@ const NotificationsPage = () => {
     })
   }, [filter, notifications, showUnreadOnly])
 
-  const unreadCount = useMemo(() => notifications.filter((notification) => !(notification.read ?? notification.isRead)).length, [notifications])
+  const unreadCount = useMemo(() => (notifications || []).filter((notification) => !(notification.read ?? notification.isRead)).length, [notifications])
 
   const handleToggleUnreadOnly = useCallback(() => {
     setShowUnreadOnly((value) => !value)

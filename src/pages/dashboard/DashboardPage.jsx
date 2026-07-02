@@ -108,7 +108,7 @@ const DashboardPage = () => {
 
   const timelineEvents = safeNotifications.slice(0, 10).map((item) => ({
     ...item,
-    time: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    time: item.timestamp ? new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A',
   }))
 
   if (isLoading) {
