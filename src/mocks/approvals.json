@@ -1,0 +1,15 @@
+{
+  "pending": [
+    { "id": "APP-1001", "type": "Procurement Request", "reference": "PR-9042", "requester": "Alice Brown", "department": "IT", "amount": 45000, "submitted": "2026-07-01", "priority": "High" },
+    { "id": "APP-1002", "type": "Vendor Onboarding", "reference": "VN-2051", "requester": "Bob Smith", "department": "Operations", "amount": 0, "submitted": "2026-07-02", "priority": "Medium" }
+  ],
+  "approved": [
+    { "id": "APP-0980", "type": "Procurement Request", "reference": "PR-9030", "requester": "Charlie Davis", "department": "Marketing", "amount": 12000, "submitted": "2026-06-28", "priority": "Low" }
+  ],
+  "rejected": [
+    { "id": "APP-0975", "type": "Contract Renewal", "reference": "CR-102", "requester": "Diana Evans", "department": "Legal", "amount": 85000, "submitted": "2026-06-25", "priority": "High", "reason": "Insufficient budget" }
+  ],
+  "escalated": [
+    { "id": "APP-0995", "type": "Procurement Request", "reference": "PR-9035", "requester": "Frank Green", "department": "Facilities", "amount": 250000, "submitted": "2026-06-20", "priority": "Critical" }
+  ]
+}

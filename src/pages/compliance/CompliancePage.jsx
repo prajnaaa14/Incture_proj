@@ -23,25 +23,11 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Skeleton
 } from '@mui/material'
-
-const violations = [
-  { id: 'V-101', issue: 'Incomplete supplier onboarding', severity: 'High', status: 'Open' },
-  { id: 'V-102', issue: 'Expired insurance certificate', severity: 'Critical', status: 'Escalated' },
-  { id: 'V-103', issue: 'Late quarterly policy attestation', severity: 'Medium', status: 'Monitoring' },
-]
-
-const missingDocuments = [
-  'SOC 2 report for Northwind Supplies',
-  'Environmental compliance attestation for Harbor Chemicals',
-  'Data processing agreement for BluePeak Technologies',
-]
-
-const certifications = [
-  { vendor: 'Northwind Supplies', certification: 'ISO 9001', daysRemaining: 12, status: 'Expiring' },
-  { vendor: 'Apex Logistics', certification: 'ISO 14001', daysRemaining: 4, status: 'Expired' },
-  { vendor: 'BluePeak Technologies', certification: 'SOC 2', daysRemaining: 31, status: 'Expiring' },
-]
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchComplianceItems } from '../../store/slices/complianceSlice'
 
 const severityColors = {
   Low: 'success',
@@ -54,136 +40,157 @@ const statusColors = {
   Open: 'error',
   Escalated: 'warning',
   Monitoring: 'info',
+  Resolved: 'success'
 }
 
-const kpiCards = [
-  { title: 'Overall Compliance', value: '94%', icon: <FactCheckRounded />, color: 'success.main' },
-  { title: 'Open Violations', value: '3', icon: <AssignmentLateRounded />, color: 'warning.main' },
-  { title: 'Missing Documents', value: '3', icon: <FolderOffRounded />, color: 'info.main' },
-  { title: 'Certifications at Risk', value: '3', icon: <ShieldRounded />, color: 'error.main' },
-]
+const CompliancePage = () => {
+  const dispatch = useDispatch()
+  const { items: data, status } = useSelector((state) => state.compliance)
+  const loading = status === 'loading' || status === 'idle'
 
-const CompliancePage = () => (
-  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-    <Box>
-      <Typography variant="h4" fontWeight={700} gutterBottom>
-        Compliance Center
-      </Typography>
-      <Typography color="text.secondary">
-        Review policy gaps, document readiness, and certification expiry exposure.
-      </Typography>
-    </Box>
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchComplianceItems())
+    }
+  }, [status, dispatch])
 
-    <Grid container spacing={2}>
-      {kpiCards.map((card) => (
-        <Grid item xs={12} sm={6} md={3} key={card.title}>
+  if (loading) {
+    return <Box sx={{ p: 3 }}><Skeleton variant="rectangular" height={400} /></Box>
+  }
+
+  const kpiCards = [
+    { title: 'Overall Score', value: `${data?.monitoring?.score || 0}%`, icon: <FactCheckRounded />, color: 'success.main' },
+    { title: 'Open Violations', value: data?.violations?.filter(v => v.status === 'Open').length || 0, icon: <AssignmentLateRounded />, color: 'warning.main' },
+    { title: 'Missing Documents', value: data?.missingDocuments?.length || 0, icon: <FolderOffRounded />, color: 'info.main' },
+    { title: 'Certifications at Risk', value: data?.expiredCertifications?.length || 0, icon: <ShieldRounded />, color: 'error.main' },
+  ]
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box>
+        <Typography variant="h4" fontWeight={700} gutterBottom>
+          Compliance Center
+        </Typography>
+        <Typography color="text.secondary">
+          Review policy gaps, document readiness, and certification expiry exposure.
+        </Typography>
+      </Box>
+
+      <Grid container spacing={2}>
+        {kpiCards.map((card) => (
+          <Grid item xs={12} sm={6} md={3} key={card.title}>
+            <Card>
+              <CardContent>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">{card.title}</Typography>
+                    <Typography variant="h5" fontWeight={700}>{card.value}</Typography>
+                  </Box>
+                  <Box sx={{ color: card.color, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: 2, bgcolor: `${card.color}22` }}>
+                    {card.icon}
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      <Grid container spacing={3}>
+        <Grid item xs={12} lg={7}>
           <Card>
             <CardContent>
-              <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Box>
-                  <Typography variant="body2" color="text.secondary">{card.title}</Typography>
-                  <Typography variant="h5" fontWeight={700}>{card.value}</Typography>
-                </Box>
-                <Box sx={{ color: card.color, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: 2, bgcolor: `${card.color}22` }}>
-                  {card.icon}
-                </Box>
-              </Stack>
+              <Typography variant="h6" fontWeight={700} gutterBottom>
+                Violations
+              </Typography>
+              <TableContainer component={Paper} variant="outlined">
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>ID</TableCell>
+                      <TableCell>Vendor</TableCell>
+                      <TableCell>Type</TableCell>
+                      <TableCell>Severity</TableCell>
+                      <TableCell>Status</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?.violations?.map((violation) => (
+                      <TableRow key={violation.id} hover>
+                        <TableCell>{violation.id}</TableCell>
+                        <TableCell>{violation.vendor}</TableCell>
+                        <TableCell>{violation.type}</TableCell>
+                        <TableCell>
+                          <Chip label={violation.severity} color={severityColors[violation.severity]} size="small" />
+                        </TableCell>
+                        <TableCell>
+                          <Chip label={violation.status} color={statusColors[violation.status] || 'default'} size="small" />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </CardContent>
           </Card>
         </Grid>
-      ))}
-    </Grid>
 
-    <Grid container spacing={3}>
-      <Grid item xs={12} lg={7}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" fontWeight={700} gutterBottom>
-              Violations
-            </Typography>
-            <TableContainer component={Paper} variant="outlined">
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Issue</TableCell>
-                    <TableCell>Severity</TableCell>
-                    <TableCell>Status</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {violations.map((violation) => (
-                    <TableRow key={violation.id} hover>
-                      <TableCell>{violation.id}</TableCell>
-                      <TableCell>{violation.issue}</TableCell>
-                      <TableCell>
-                        <Chip label={violation.severity} color={severityColors[violation.severity]} size="small" />
-                      </TableCell>
-                      <TableCell>
-                        <Chip label={violation.status} color={statusColors[violation.status]} size="small" />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} lg={5}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" fontWeight={700} gutterBottom>
+                Missing Documents
+              </Typography>
+              <List disablePadding>
+                {data?.missingDocuments?.map((document) => (
+                  <ListItem key={document.id} divider>
+                    <ListItemIcon>
+                      <FolderOffRounded color="warning" />
+                    </ListItemIcon>
+                    <ListItemText primary={document.document} secondary={`Vendor: ${document.vendor} • Due: ${document.dueDate}`} />
+                  </ListItem>
+                ))}
+              </List>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
 
-      <Grid item xs={12} lg={5}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" fontWeight={700} gutterBottom>
-              Missing Documents
-            </Typography>
-            <List disablePadding>
-              {missingDocuments.map((document) => (
-                <ListItem key={document} divider>
-                  <ListItemIcon>
-                    <FolderOffRounded color="warning" />
-                  </ListItemIcon>
-                  <ListItemText primary={document} />
-                </ListItem>
-              ))}
-            </List>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
-
-    <Card>
-      <CardContent>
-        <Typography variant="h6" fontWeight={700} gutterBottom>
-          Expiring / Expired Certifications
-        </Typography>
-        <TableContainer component={Paper} variant="outlined">
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Vendor</TableCell>
-                <TableCell>Certification</TableCell>
-                <TableCell>Days Remaining</TableCell>
-                <TableCell>Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {certifications.map((item) => (
-                <TableRow key={`${item.vendor}-${item.certification}`} hover>
-                  <TableCell>{item.vendor}</TableCell>
-                  <TableCell>{item.certification}</TableCell>
-                  <TableCell>{item.daysRemaining}</TableCell>
-                  <TableCell>
-                    <Chip label={item.status} color={item.status === 'Expired' ? 'error' : 'warning'} size="small" />
-                  </TableCell>
+      <Card>
+        <CardContent>
+          <Typography variant="h6" fontWeight={700} gutterBottom>
+            Expiring / Expired Certifications
+          </Typography>
+          <TableContainer component={Paper} variant="outlined">
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Vendor</TableCell>
+                  <TableCell>Certification</TableCell>
+                  <TableCell>Expired On</TableCell>
+                  <TableCell>Status</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </CardContent>
-    </Card>
-  </Box>
-)
+              </TableHead>
+              <TableBody>
+                {data?.expiredCertifications?.map((item) => (
+                  <TableRow key={item.id} hover>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.vendor}</TableCell>
+                    <TableCell>{item.certification}</TableCell>
+                    <TableCell>{item.expiredOn}</TableCell>
+                    <TableCell>
+                      <Chip label="Expired" color="error" size="small" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </CardContent>
+      </Card>
+    </Box>
+  )
+}
 
 export default CompliancePage

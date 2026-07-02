@@ -1,0 +1,21 @@
+{
+  "monitoring": {
+    "score": 85,
+    "totalChecks": 1240,
+    "passed": 1054,
+    "failed": 186
+  },
+  "violations": [
+    { "id": "V-101", "vendor": "TechCorp Inc.", "type": "Data Privacy", "severity": "High", "date": "2026-06-15", "status": "Open" },
+    { "id": "V-102", "vendor": "Global Logistics", "type": "Labor Standards", "severity": "Medium", "date": "2026-06-20", "status": "Under Review" },
+    { "id": "V-103", "vendor": "Office Supplies Co.", "type": "Environmental", "severity": "Low", "date": "2026-07-01", "status": "Resolved" }
+  ],
+  "missingDocuments": [
+    { "id": "MD-01", "vendor": "CloudNet Services", "document": "ISO 27001 Certificate", "dueDate": "2026-05-30" },
+    { "id": "MD-02", "vendor": "Secure Data Ltd", "document": "SOC 2 Type II Report", "dueDate": "2026-06-15" }
+  ],
+  "expiredCertifications": [
+    { "id": "EC-01", "vendor": "BuildIt Construction", "certification": "OSHA Compliance", "expiredOn": "2026-05-01" },
+    { "id": "EC-02", "vendor": "FoodServ Co", "certification": "Health & Safety", "expiredOn": "2026-06-10" }
+  ]
+}

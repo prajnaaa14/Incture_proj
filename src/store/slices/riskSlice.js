@@ -7,9 +7,7 @@ const simulateDelay = (ms = 450) => new Promise((resolve) => window.setTimeout(r
 export const fetchRiskSignals = createAsyncThunk('risk/fetchRiskSignals', async (_, { dispatch, rejectWithValue }) => {
   try {
     await simulateDelay()
-    const payload = {
-      items: Array.isArray(riskData?.riskList) ? riskData.riskList : Array.isArray(riskData) ? riskData : [],
-    }
+    const payload = riskData
     dispatch(pushSnackbar({ message: 'Risk signals loaded.', severity: 'success' }))
     return payload
   } catch (error) {
@@ -20,7 +18,12 @@ export const fetchRiskSignals = createAsyncThunk('risk/fetchRiskSignals', async 
 })
 
 const initialState = {
-  items: [],
+  data: {
+    matrix: { likelihood: [], impact: [], values: [] },
+    trend: [],
+    distribution: [],
+    riskList: []
+  },
   status: 'idle',
   error: null,
 }
@@ -36,7 +39,7 @@ const riskSlice = createSlice({
       })
       .addCase(fetchRiskSignals.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.items = action.payload.items
+        state.data = action.payload
       })
       .addCase(fetchRiskSignals.rejected, (state, action) => {
         state.status = 'failed'

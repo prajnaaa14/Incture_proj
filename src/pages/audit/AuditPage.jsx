@@ -4,6 +4,7 @@ import {
   HistoryRounded,
   PersonRounded,
   SettingsRounded,
+  AssessmentRounded
 } from '@mui/icons-material'
 import {
   Box,
@@ -22,29 +23,14 @@ import {
   TableRow,
   Tabs,
   Typography,
+  Skeleton
 } from '@mui/material'
-import { useMemo, useState } from 'react'
-
-const auditEvents = [
-  { timestamp: '2026-06-23 09:12', user: 'A. Singh', action: 'Approved Request', module: 'Procurement', details: 'Approved PO-1042' },
-  { timestamp: '2026-06-23 08:47', user: 'M. Chen', action: 'Updated Vendor', module: 'Vendor Governance', details: 'Risk profile revised' },
-  { timestamp: '2026-06-22 16:05', user: 'J. Rivera', action: 'Filed Compliance Notice', module: 'Compliance', details: 'Issued overdue document reminder' },
-  { timestamp: '2026-06-22 14:30', user: 'P. Kumar', action: 'Reset Password', module: 'Access', details: 'Self-service password reset' },
-]
-
-const userActivity = [
-  { user: 'A. Singh', actions: ['Approved request PO-1042', 'Reviewed vendor scorecard'], lastSeen: '09:12' },
-  { user: 'M. Chen', actions: ['Updated vendor risk profile', 'Closed remediation task'], lastSeen: '08:47' },
-  { user: 'J. Rivera', actions: ['Filed compliance notice', 'Downloaded report pack'], lastSeen: '16:05' },
-]
-
-const systemLogs = [
-  { timestamp: '2026-06-23 09:12', source: 'Auth Service', message: 'Token refresh completed successfully' },
-  { timestamp: '2026-06-23 08:47', source: 'Workflow Engine', message: 'Approval queue synced to 6 pending items' },
-  { timestamp: '2026-06-22 16:05', source: 'Compliance Service', message: 'Alert rules recalculated' },
-]
+import { useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAuditTrail } from '../../store/slices/auditSlice'
 
 const exportCsv = (rows, filename) => {
+  if (!rows || rows.length === 0) return
   const csv = [Object.keys(rows[0]).join(','), ...rows.map((row) => Object.values(row).join(','))].join('\n')
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
@@ -67,9 +53,34 @@ const exportPdf = (label) => {
 }
 
 const AuditPage = () => {
+  const dispatch = useDispatch()
+  const { entries: data, status } = useSelector((state) => state.audit)
+  const loading = status === 'loading' || status === 'idle'
   const [tab, setTab] = useState('log')
 
-  const exportLabel = useMemo(() => (tab === 'log' ? 'Audit Log' : tab === 'users' ? 'User Activity' : 'System Logs'), [tab])
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchAuditTrail())
+    }
+  }, [status, dispatch])
+
+  const exportLabel = useMemo(() => {
+    if (tab === 'log') return 'Audit Log'
+    if (tab === 'users') return 'User Activity'
+    if (tab === 'reports') return 'Reports'
+    return 'System Logs'
+  }, [tab])
+
+  const handleExportCsv = () => {
+    if (tab === 'log') exportCsv(data?.auditLogs || [], 'audit-log.csv')
+    if (tab === 'users') exportCsv(data?.userActivities || [], 'user-activity.csv')
+    if (tab === 'system') exportCsv(data?.systemLogs || [], 'system-logs.csv')
+    if (tab === 'reports') exportCsv(data?.reports || [], 'reports-log.csv')
+  }
+
+  if (loading) {
+    return <Box sx={{ p: 3 }}><Skeleton variant="rectangular" height={400} /></Box>
+  }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -85,16 +96,17 @@ const AuditPage = () => {
       <Card>
         <CardContent>
           <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" spacing={2}>
-            <Tabs value={tab} onChange={(_, value) => setTab(value)}>
+            <Tabs value={tab} onChange={(_, value) => setTab(value)} variant="scrollable" scrollButtons="auto">
               <Tab value="log" label="Audit Log" />
               <Tab value="users" label="User Activity" />
               <Tab value="system" label="System Logs" />
+              <Tab value="reports" label="Reports" />
             </Tabs>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
               <Button variant="outlined" startIcon={<DescriptionRounded />} onClick={() => exportPdf(exportLabel)}>
                 Export PDF
               </Button>
-              <Button variant="contained" startIcon={<DownloadRounded />} onClick={() => exportCsv(tab === 'log' ? auditEvents : tab === 'users' ? userActivity : systemLogs, `${exportLabel.toLowerCase().replace(/\s+/g, '-')}.csv`)}>
+              <Button variant="contained" startIcon={<DownloadRounded />} onClick={handleExportCsv}>
                 Export Excel
               </Button>
             </Stack>
@@ -112,21 +124,25 @@ const AuditPage = () => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
+                    <TableCell>ID</TableCell>
                     <TableCell>Timestamp</TableCell>
                     <TableCell>User</TableCell>
                     <TableCell>Action</TableCell>
-                    <TableCell>Module</TableCell>
-                    <TableCell>Details</TableCell>
+                    <TableCell>IP Address</TableCell>
+                    <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {auditEvents.map((event) => (
-                    <TableRow key={`${event.timestamp}-${event.action}`} hover>
+                  {data?.auditLogs?.map((event) => (
+                    <TableRow key={event.id} hover>
+                      <TableCell>{event.id}</TableCell>
                       <TableCell>{event.timestamp}</TableCell>
                       <TableCell>{event.user}</TableCell>
                       <TableCell>{event.action}</TableCell>
-                      <TableCell>{event.module}</TableCell>
-                      <TableCell>{event.details}</TableCell>
+                      <TableCell>{event.ip}</TableCell>
+                      <TableCell>
+                         <Chip label={event.status} color={event.status === 'Success' ? 'success' : 'error'} size="small" />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -146,23 +162,19 @@ const AuditPage = () => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
+                    <TableCell>ID</TableCell>
                     <TableCell>User</TableCell>
-                    <TableCell>Actions</TableCell>
-                    <TableCell>Last Seen</TableCell>
+                    <TableCell>Activity</TableCell>
+                    <TableCell>Time</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {userActivity.map((activity) => (
-                    <TableRow key={activity.user} hover>
+                  {data?.userActivities?.map((activity) => (
+                    <TableRow key={activity.id} hover>
+                      <TableCell>{activity.id}</TableCell>
                       <TableCell>{activity.user}</TableCell>
-                      <TableCell>
-                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                          {activity.actions.map((action) => (
-                            <Chip key={action} label={action} size="small" variant="outlined" />
-                          ))}
-                        </Stack>
-                      </TableCell>
-                      <TableCell>{activity.lastSeen}</TableCell>
+                      <TableCell>{activity.activity}</TableCell>
+                      <TableCell>{activity.time}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -182,17 +194,57 @@ const AuditPage = () => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
+                    <TableCell>ID</TableCell>
                     <TableCell>Timestamp</TableCell>
-                    <TableCell>Source</TableCell>
+                    <TableCell>Level</TableCell>
                     <TableCell>Message</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {systemLogs.map((log) => (
-                    <TableRow key={`${log.timestamp}-${log.source}`} hover>
+                  {data?.systemLogs?.map((log) => (
+                    <TableRow key={log.id} hover>
+                      <TableCell>{log.id}</TableCell>
                       <TableCell>{log.timestamp}</TableCell>
-                      <TableCell>{log.source}</TableCell>
+                      <TableCell>
+                        <Chip label={log.level} color={log.level === 'ERROR' ? 'error' : log.level === 'WARNING' ? 'warning' : 'default'} size="small" />
+                      </TableCell>
                       <TableCell>{log.message}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </CardContent>
+        </Card>
+      )}
+
+      {tab === 'reports' && (
+        <Card>
+          <CardContent>
+            <Typography variant="h6" fontWeight={700} gutterBottom>
+              Audit Reports
+            </Typography>
+            <TableContainer component={Paper} variant="outlined">
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Generated By</TableCell>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data?.reports?.map((report) => (
+                    <TableRow key={report.id} hover>
+                      <TableCell>{report.id}</TableCell>
+                      <TableCell>{report.name}</TableCell>
+                      <TableCell>{report.generatedBy}</TableCell>
+                      <TableCell>{report.date}</TableCell>
+                      <TableCell>
+                         <Chip label={report.status} color="success" size="small" />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

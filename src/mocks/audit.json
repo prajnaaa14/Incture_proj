@@ -1,0 +1,23 @@
+{
+  "auditLogs": [
+    { "id": "AL-501", "action": "User Login", "user": "john.doe@company.com", "timestamp": "2026-07-01T08:30:00Z", "ip": "192.168.1.105", "status": "Success" },
+    { "id": "AL-502", "action": "Vendor Approved", "user": "sarah.smith@company.com", "timestamp": "2026-07-01T09:15:22Z", "ip": "10.0.0.45", "status": "Success" },
+    { "id": "AL-503", "action": "Failed Login", "user": "admin@company.com", "timestamp": "2026-07-01T10:05:10Z", "ip": "203.0.113.42", "status": "Failed" },
+    { "id": "AL-504", "action": "Document Uploaded", "user": "mike.jones@company.com", "timestamp": "2026-07-02T11:20:00Z", "ip": "192.168.1.210", "status": "Success" }
+  ],
+  "userActivities": [
+    { "id": "UA-101", "user": "john.doe@company.com", "activity": "Viewed Risk Dashboard", "time": "10 mins ago" },
+    { "id": "UA-102", "user": "sarah.smith@company.com", "activity": "Approved PR-10042", "time": "1 hour ago" },
+    { "id": "UA-103", "user": "mike.jones@company.com", "activity": "Updated Vendor Profile", "time": "3 hours ago" }
+  ],
+  "systemLogs": [
+    { "id": "SL-01", "level": "INFO", "message": "Daily backup completed successfully", "timestamp": "2026-07-02T00:00:00Z" },
+    { "id": "SL-02", "level": "WARNING", "message": "High memory usage detected on Node 3", "timestamp": "2026-07-02T04:15:00Z" },
+    { "id": "SL-03", "level": "ERROR", "message": "Failed to connect to email gateway", "timestamp": "2026-07-02T08:45:12Z" }
+  ],
+  "reports": [
+    { "id": "RPT-001", "name": "Monthly Access Review", "generatedBy": "System", "date": "2026-07-01", "status": "Available" },
+    { "id": "RPT-002", "name": "Vendor Compliance Audit Q2", "generatedBy": "Sarah Smith", "date": "2026-06-30", "status": "Available" },
+    { "id": "RPT-003", "name": "Failed Login Attempts (Weekly)", "generatedBy": "System", "date": "2026-06-28", "status": "Available" }
+  ]
+}

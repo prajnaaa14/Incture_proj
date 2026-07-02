@@ -1,21 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { pushSnackbar } from './uiSlice'
 
+import mockData from '../../mocks/compliance.json'
+
 const simulateDelay = (ms = 450) => new Promise((resolve) => window.setTimeout(resolve, ms))
 
 export const fetchComplianceItems = createAsyncThunk('compliance/fetchComplianceItems', async (_, { dispatch, rejectWithValue }) => {
   try {
     await simulateDelay()
-    const payload = {
-      items: [
-        { id: 'C-01', title: 'SOC 2 attestation', status: 'Compliant' },
-        { id: 'C-02', title: 'Supplier onboarding', status: 'Pending' },
-      ],
-    }
-    dispatch(pushSnackbar({ message: 'Compliance items loaded.', severity: 'success' }))
-    return payload
+    dispatch(pushSnackbar({ message: 'Compliance data loaded.', severity: 'success' }))
+    return mockData
   } catch (error) {
-    const message = error?.message || 'Unable to load compliance items.'
+    const message = error?.message || 'Unable to load compliance data.'
     dispatch(pushSnackbar({ message, severity: 'error' }))
     return rejectWithValue(message)
   }

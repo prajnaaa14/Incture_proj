@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.03% </span>
+                <span class="strong">98.18% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>50/51</span>
+                <span class='fraction'>54/55</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.65% </span>
+                <span class="strong">81.08% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>26/29</span>
+                <span class='fraction'>30/37</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.5% </span>
+                <span class="strong">97.72% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/40</span>
+                <span class='fraction'>43/44</span>
             </div>
         
             
@@ -406,7 +406,12 @@
 <a name='L341'></a><a href='#L341'>341</a>
 <a name='L342'></a><a href='#L342'>342</a>
 <a name='L343'></a><a href='#L343'>343</a>
-<a name='L344'></a><a href='#L344'>344</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L344'></a><a href='#L344'>344</a>
+<a name='L345'></a><a href='#L345'>345</a>
+<a name='L346'></a><a href='#L346'>346</a>
+<a name='L347'></a><a href='#L347'>347</a>
+<a name='L348'></a><a href='#L348'>348</a>
+<a name='L349'></a><a href='#L349'>349</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -469,6 +474,11 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -813,25 +823,30 @@ const DashboardPage = () =&gt; {
   const notificationStatus = useSelector((state) =&gt; state.notification.status)
   const notifications = useSelector((state) =&gt; state.notification.items)
 &nbsp;
-  const hasExistingData = Boolean(dashboardSummary || dashboardTrend.length || riskSignals.length || vendors.length || notifications.length)
+  const safeRiskSignals = Array.isArray(riskSignals) ? riskSignals : <span class="branch-1 cbranch-no" title="branch not covered" >[]</span>
+  const safeVendors = Array.isArray(vendors) ? vendors : <span class="branch-1 cbranch-no" title="branch not covered" >[]</span>
+  const safeNotifications = Array.isArray(notifications) ? notifications : <span class="branch-1 cbranch-no" title="branch not covered" >[]</span>
+  const safeDashboardTrend = Array.isArray(dashboardTrend) ? dashboardTrend : <span class="branch-1 cbranch-no" title="branch not covered" >[]</span>
+&nbsp;
+  const hasExistingData = Boolean(dashboardSummary || safeDashboardTrend.length || safeRiskSignals.length || safeVendors.length || safeNotifications.length)
 &nbsp;
   useEffect(() =&gt; {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (dashboardStatus === 'idle' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!dashboardSummary)</span> {
 <span class="cstat-no" title="statement not covered" >      dispatch(fetchDashboardMetrics())</span>
     }
 &nbsp;
-    if (riskStatus === 'idle' &amp;&amp; !riskSignals.length) {
+    if (riskStatus === 'idle' &amp;&amp; !safeRiskSignals.length) {
       dispatch(fetchRiskSignals())
     }
 &nbsp;
-    if (notificationStatus === 'idle' &amp;&amp; !notifications.length) {
+    if (notificationStatus === 'idle' &amp;&amp; !safeNotifications.length) {
       dispatch(fetchNotifications())
     }
 &nbsp;
-    if (vendorStatus === 'idle' &amp;&amp; !vendors.length) {
+    if (vendorStatus === 'idle' &amp;&amp; !safeVendors.length) {
       dispatch(fetchVendors())
     }
-  }, [dashboardStatus, dashboardSummary, dispatch, notificationStatus, notifications.length, riskSignals.length, riskStatus, vendorStatus, vendors.length])
+  }, [dashboardStatus, dashboardSummary, dispatch, notificationStatus, safeNotifications.length, safeRiskSignals.length, riskStatus, safeVendors.length, vendorStatus])
 &nbsp;
   const isLoading = [dashboardStatus, riskStatus, vendorStatus, notificationStatus].some((status) =&gt; status === 'loading') &amp;&amp; !hasExistingData
 &nbsp;
@@ -862,13 +877,13 @@ const DashboardPage = () =&gt; {
     },
     {
       title: 'Total Vendors',
-      value: vendors.length,
+      value: safeVendors.length,
       icon: &lt;GroupRounded /&gt;,
       color: 'secondary.main',
     },
     {
       title: 'Active Risks',
-      value: riskSignals.filter((risk) =&gt; risk.status === 'Open' || <span class="branch-1 cbranch-no" title="branch not covered" >risk.status === 'Monitoring')</span>.length,
+      value: safeRiskSignals.filter((risk) =&gt; risk.status === 'Open' || <span class="branch-1 cbranch-no" title="branch not covered" >risk.status === 'Monitoring')</span>.length,
       icon: &lt;ShieldRounded /&gt;,
       color: 'info.main',
     },
@@ -880,14 +895,14 @@ const DashboardPage = () =&gt; {
     },
   ]
 &nbsp;
-  const monthlyTrend = dashboardTrend.length
-    ? dashboardTrend.map((item) =&gt; ({ month: item.label, value: item.value }))
+  const monthlyTrend = safeDashboardTrend.length
+    ? safeDashboardTrend.map((item) =&gt; ({ month: item.label, value: item.value }))
     : Array.from({ length: 12 }, (_, index) =&gt; ({
         month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][index],
         value: 180000 + index * 12000 + (index % 3) * 5000,
       }))
 &nbsp;
-  const timelineEvents = notifications.slice(0, 10).map((item) =&gt; ({
+  const timelineEvents = safeNotifications.slice(0, 10).map((item) =&gt; ({
     ...item,
     time: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
   }))
@@ -1099,7 +1114,7 @@ export default DashboardPage
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-01T03:33:07.717Z
+                at 2026-07-02T08:32:12.078Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

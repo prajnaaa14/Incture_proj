@@ -14,7 +14,16 @@ const renderWithProviders = (ui, preloadedState = {}) => {
     preloadedState,
   })
 
-  return render(<Provider store={store}><MemoryRouter>{ui}</MemoryRouter></Provider>)
+  return render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={['/login']}>
+        <Routes>
+          <Route path="/login" element={ui} />
+          <Route path="/dashboard" element={<div>Dashboard page</div>} />
+        </Routes>
+      </MemoryRouter>
+    </Provider>
+  )
 }
 
 describe('auth forms', () => {
@@ -39,6 +48,22 @@ describe('auth forms', () => {
     await waitFor(() => {
       expect(screen.queryByText(/email is required/i)).not.toBeInTheDocument()
     })
+  })
+
+  it('keeps the login page visible for an authenticated user', () => {
+    renderWithProviders(<LoginPage />, {
+      auth: {
+        user: { name: 'Asha Rao', role: 'admin' },
+        isAuthenticated: true,
+        status: 'succeeded',
+        error: null,
+        lastLogin: null,
+        sessionExpired: false,
+      },
+    })
+
+    expect(screen.getByRole('heading', { name: /sign in/i })).toBeInTheDocument()
+    expect(screen.queryByText(/dashboard page/i)).not.toBeInTheDocument()
   })
 
   it('validates forgot password and shows success state', async () => {

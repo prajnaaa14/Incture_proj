@@ -1,8 +1,8 @@
 import { Alert, Box, Button, CircularProgress, Paper, Stack, TextField, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { loginThunk } from '../../store/slices/authSlice'
@@ -18,7 +18,6 @@ const LoginPage = () => {
   const location = useLocation()
   const authStatus = useSelector((state) => state.auth.status)
   const authError = useSelector((state) => state.auth.error)
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const sessionExpired = useSelector((state) => state.auth.sessionExpired)
   const [submitError, setSubmitError] = useState('')
 
@@ -28,19 +27,13 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      const from = location.state?.from?.pathname || '/dashboard'
-      navigate(from, { replace: true })
-    }
-  }, [isAuthenticated, location.state, navigate])
-
   const onSubmit = async (data) => {
     setSubmitError('')
     const result = await dispatch(loginThunk({ email: data.email, password: data.password }))
 
     if (loginThunk.fulfilled.match(result)) {
-      navigate('/dashboard', { replace: true })
+      const from = location.state?.from?.pathname || '/dashboard'
+      navigate(from, { replace: true })
     } else {
       setSubmitError(result.payload || 'Unable to sign in')
     }
@@ -74,10 +67,10 @@ const LoginPage = () => {
           </Box>
 
           <Stack direction="row" spacing={1} sx={{ justifyContent: 'space-between', pt: 1 }}>
-            <Button component="a" href="/forgot-password" variant="text">
+            <Button component={Link} to="/forgot-password" variant="text">
               Forgot password?
             </Button>
-            <Button component="a" href="/reset-password" variant="text">
+            <Button component={Link} to="/reset-password" variant="text">
               Reset password
             </Button>
           </Stack>

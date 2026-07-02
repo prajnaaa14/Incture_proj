@@ -8,12 +8,7 @@ export const fetchProcurementPipeline = createAsyncThunk('procurement/fetchProcu
   try {
     await simulateDelay()
     const payload = {
-      items: requests.slice(0, 3).map((request) => ({
-        id: request.id,
-        supplier: request.supplier || request.department,
-        amount: request.amount,
-        status: request.status,
-      })),
+      items: requests,
       totalValue: requests.reduce((sum, request) => sum + request.amount, 0),
     }
     dispatch(pushSnackbar({ message: 'Procurement pipeline loaded.', severity: 'success' }))

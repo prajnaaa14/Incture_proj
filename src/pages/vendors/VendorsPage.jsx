@@ -29,7 +29,8 @@ import {
 } from '@mui/material'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import vendors from '../../mocks/vendors.json'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchVendors } from '../../store/slices/vendorSlice'
 
 const statusColors = {
   Approved: 'success',
@@ -84,12 +85,15 @@ const VendorsPage = () => {
   const [riskLevel, setRiskLevel] = useState('All')
   const [certificationStatus, setCertificationStatus] = useState('All')
   const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+  const { vendors, status } = useSelector((state) => state.vendor)
+  const loading = status === 'loading' || status === 'idle'
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 350)
-    return () => window.clearTimeout(timer)
-  }, [])
+    if (status === 'idle') {
+      dispatch(fetchVendors())
+    }
+  }, [status, dispatch])
 
   const stats = useMemo(() => ({
     total: vendors.length,

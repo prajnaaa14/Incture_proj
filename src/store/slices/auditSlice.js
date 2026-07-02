@@ -1,16 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { pushSnackbar } from './uiSlice'
 
+import mockData from '../../mocks/audit.json'
+
+const simulateDelay = (ms = 450) => new Promise((resolve) => window.setTimeout(resolve, ms))
+
 export const fetchAuditTrail = createAsyncThunk('audit/fetchAuditTrail', async (_, { dispatch, rejectWithValue }) => {
   try {
-    const payload = {
-      entries: [
-        { id: 'A-01', event: 'Approval granted', actor: 'L. Chen', timestamp: '09:10' },
-        { id: 'A-02', event: 'Vendor policy updated', actor: 'M. Patel', timestamp: '11:25' },
-      ],
-    }
+    await simulateDelay()
     dispatch(pushSnackbar({ message: 'Audit trail loaded.', severity: 'success' }))
-    return payload
+    return mockData
   } catch (error) {
     const message = error?.message || 'Unable to load audit trail.'
     dispatch(pushSnackbar({ message, severity: 'error' }))

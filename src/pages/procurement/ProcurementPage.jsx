@@ -27,7 +27,8 @@ import {
 } from '@mui/material'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import requests from '../../mocks/requests.json'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProcurementPipeline } from '../../store/slices/procurementSlice'
 
 const statusColors = {
   Pending: 'warning',
@@ -61,16 +62,19 @@ const ProcurementPage = () => {
   const [endDate, setEndDate] = useState('')
   const [sortConfig, setSortConfig] = useState({ key: 'createdDate', direction: 'desc' })
   const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+  const { items: requests, status } = useSelector((state) => state.procurement)
+  const loading = status === 'loading' || status === 'idle'
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchProcurementPipeline())
+    }
+  }, [status, dispatch])
 
   useEffect(() => {
     setPage(1)
   }, [search, statusFilter, startDate, endDate])
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 400)
-    return () => window.clearTimeout(timer)
-  }, [])
 
   const filteredRows = useMemo(() => {
     const searchValue = search.trim().toLowerCase()

@@ -64,7 +64,7 @@ const appBarHeight = 64
 
 const MainLayout = ({ children, actionSlot }) => {
   const [collapsed, setCollapsed] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(true)
   const [confirmLogoutOpen, setConfirmLogoutOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
@@ -76,7 +76,8 @@ const MainLayout = ({ children, actionSlot }) => {
   const globalLoading = useSelector((state) => state.ui.globalLoading)
   const role = user?.role
   const unreadNotificationCount = useSelector((state) => (state.notification?.items || []).filter((item) => !(item.read ?? item.isRead)).length)
-  const sidebarWidth = isMobile ? 0 : collapsed ? collapsedWidth : drawerWidth
+  const sidebarWidth = collapsed ? collapsedWidth : drawerWidth
+  const effectiveSidebarWidth = isMobile ? (mobileOpen ? drawerWidth : 0) : sidebarWidth
 
   const visibleNavItems = navItems.filter((item) => {
     if (role === 'employee') {
@@ -133,6 +134,11 @@ const MainLayout = ({ children, actionSlot }) => {
           <IconButton edge="start" color="inherit" onClick={() => (isMobile ? setMobileOpen((value) => !value) : setCollapsed((value) => !value))} aria-label="toggle sidebar">
             {isMobile ? <MenuOpenRounded /> : collapsed ? <ChevronRight /> : <MenuOpenRounded />}
           </IconButton>
+          {isMobile ? (
+            <Typography variant="body2" sx={{ fontWeight: 600, opacity: 0.9 }}>
+              Menu
+            </Typography>
+          ) : null}
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               Enterprise Console
@@ -164,16 +170,16 @@ const MainLayout = ({ children, actionSlot }) => {
 
       <Box sx={{ display: 'flex', flex: 1 }}>
         <Drawer
-          variant={isMobile ? 'temporary' : 'permanent'}
+          variant={isMobile ? 'persistent' : 'permanent'}
           open={isMobile ? mobileOpen : true}
           onClose={() => setMobileOpen(false)}
           ModalProps={{ keepMounted: true }}
           sx={{
-            width: sidebarWidth,
+            width: effectiveSidebarWidth,
             flexShrink: 0,
             transition: 'width 0.2s ease-in-out',
             '& .MuiDrawer-paper': {
-              width: sidebarWidth,
+              width: effectiveSidebarWidth,
               boxSizing: 'border-box',
               transition: 'width 0.2s ease-in-out',
               overflowX: 'hidden',
@@ -186,7 +192,7 @@ const MainLayout = ({ children, actionSlot }) => {
           {drawerContent}
         </Drawer>
 
-        <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', ml: isMobile ? 0 : `${sidebarWidth}px` }}>
+        <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', ml: isMobile ? (mobileOpen ? `${drawerWidth}px` : 0) : `${sidebarWidth}px` }}>
           {globalLoading ? <LinearProgress color="primary" sx={{ width: '100%' }} /> : null}
           <Container maxWidth="xl" sx={{ py: 3, flex: 1 }}>
             {children || <Outlet />}

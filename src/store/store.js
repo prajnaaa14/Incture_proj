@@ -11,6 +11,7 @@ import reportReducer from './slices/reportSlice'
 import riskReducer from './slices/riskSlice'
 import uiReducer from './slices/uiSlice'
 import vendorReducer from './slices/vendorSlice'
+import approvalReducer from './slices/approvalSlice'
 
 const createNoopStorage = () => ({
   getItem: async () => null,
@@ -29,7 +30,7 @@ const storage = typeof window !== 'undefined' && window.localStorage
 const persistConfig = {
   key: 'enterprise-console-root',
   storage,
-  whitelist: ['auth', 'dashboard', 'procurement', 'vendor', 'risk', 'compliance', 'audit', 'report', 'notification', 'ui'],
+  whitelist: ['auth', 'dashboard', 'procurement', 'vendor', 'risk', 'compliance', 'audit', 'report', 'notification', 'ui', 'approvals'],
 }
 
 const rootReducer = combineReducers({
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   notification: notificationReducer,
   ui: uiReducer,
   counter: counterReducer,
+  approvals: approvalReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
