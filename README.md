@@ -31,7 +31,7 @@ The application utilizes strict Role-Based Access Control (RBAC). Log in with th
 | **Manager** | `manager@enterprise.com` | `password123` |
 | **Employee** | `employee@enterprise.com` | `password123` |
 | **Auditor** | `auditor@enterprise.com` | `password123` |
-
+| **Compliance** | `compliance@enterprise.com` | `password123` |
 
 ---
 
