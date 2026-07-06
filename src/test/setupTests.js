@@ -1,4 +1,7 @@
 import '@testing-library/jest-dom'
+if (typeof globalThis.vi !== 'undefined') {
+  globalThis.jest = globalThis.vi
+}
 import { TextDecoder, TextEncoder } from 'util'
 
 global.TextEncoder = TextEncoder

@@ -242,7 +242,7 @@ const ReportsPage = () => {
              <Box>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
                   <FilterListRounded color="action" fontSize="small" />
-                  <Typography variant="subtitle2" color="text.secondary" fontWeight={600} textTransform="uppercase">Report Filters</Typography>
+                  <Typography variant="subtitle2" color="text.secondary" fontWeight={600} sx={{ textTransform: 'uppercase' }}>Report Filters</Typography>
                 </Stack>
                 {renderFilters()}
                 

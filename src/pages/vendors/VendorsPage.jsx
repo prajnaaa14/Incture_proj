@@ -63,7 +63,7 @@ const VendorRow = memo(({ vendor }) => {
         <Chip label={vendor.status} color={statusColors[vendor.status]} size="small" />
       </TableCell>
       <TableCell>
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+        <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
           {(vendor.certifications || []).map((cert) => (
             <Chip key={cert} label={cert} size="small" variant="outlined" />
           ))}
@@ -168,7 +168,7 @@ const VendorsPage = () => {
             placeholder="Search vendor or ID"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            InputProps={{ startAdornment: <SearchRounded sx={{ mr: 1, color: 'text.secondary' }} /> }}
+            slotProps={{ input: { startAdornment: <SearchRounded sx={{ mr: 1, color: 'text.secondary' }} /> } }}
           />
 
           <FormControl size="small" sx={{ minWidth: 180 }}>

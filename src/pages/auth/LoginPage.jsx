@@ -8,7 +8,7 @@ import * as yup from 'yup'
 import { loginThunk } from '../../store/slices/authSlice'
 
 const schema = yup.object({
-  email: yup.string().email('Enter a valid email').required('Email is required'),
+  email: yup.string().required('Email is required').email('Enter a valid email'),
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 })
 
@@ -32,11 +32,19 @@ const LoginPage = () => {
     const result = await dispatch(loginThunk({ email: data.email, password: data.password }))
 
     if (loginThunk.fulfilled.match(result)) {
+      const userRole = result.payload?.user?.role
       let from = location.state?.from?.pathname || '/'
-      // If the user's previous session left them on the dashboard (default admin page)
-      // but their new login role doesn't have access, they'll get an Access Denied error.
-      // We route '/dashboard' through the root '/' so RootRedirect can properly direct them.
-      if (from === '/dashboard') {
+
+      // Force restricted roles to their designated home pages
+      if (userRole === 'auditor') {
+        from = '/audit'
+      } else if (userRole === 'compliance') {
+        from = '/compliance'
+      } else if (userRole === 'employee') {
+        // Employees also shouldn't go to random pages they might have bookmarked if they don't have access
+        from = '/dashboard'
+      } else if (from === '/dashboard') {
+        // For admin/manager, let RootRedirect handle the dashboard
         from = '/'
       }
       

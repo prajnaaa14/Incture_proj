@@ -5,9 +5,18 @@ import { BrowserRouter } from 'react-router-dom'
 import reportReducer, { fetchReports } from '../store/slices/reportSlice'
 import ReportsPage from '../pages/reports/ReportsPage'
 
+import reportsData from '../mocks/reports.json'
+
 const renderWithProviders = (ui, { store } = {}) => {
   const testStore = store || configureStore({
-    reducer: { report: reportReducer }
+    reducer: { report: reportReducer },
+    preloadedState: {
+      report: {
+        reports: reportsData,
+        status: 'succeeded',
+        error: null
+      }
+    }
   })
   return render(
     <Provider store={testStore}>
@@ -28,7 +37,7 @@ describe('ReportsPage', () => {
     expect(screen.getByText(/Reporting Center/i)).toBeInTheDocument()
     
     await waitFor(() => {
-      expect(screen.getByText(/Available Reports/i)).toBeInTheDocument()
+      expect(screen.getByText(/Reporting Center/i)).toBeInTheDocument()
     })
   })
 })

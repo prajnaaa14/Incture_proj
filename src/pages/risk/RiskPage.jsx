@@ -34,9 +34,12 @@ import {
   Pie,
   PieChart,
   ResponsiveContainer,
+  Scatter,
+  ScatterChart,
   Tooltip,
   XAxis,
   YAxis,
+  ZAxis,
   CartesianGrid,
 } from 'recharts'
 import { fetchRiskSignals } from '../../store/slices/riskSlice'
@@ -130,41 +133,56 @@ const RiskPage = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
-                Risk Matrix (Heat Maps)
+                Risk Landscape (Bubble Chart)
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                5x5 matrix mapping likelihood against impact.
+                Likelihood vs Impact mapping of identified risks.
               </Typography>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <Grid container spacing={1}>
-                    <Grid item xs={2} />
-                    {riskData.matrix.impact.map((impact) => (
-                      <Grid item xs={2} key={impact}>
-                        <Typography variant="caption" fontWeight={600} display="block" align="center">
-                          {impact}
-                        </Typography>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
-                {riskData.matrix.likelihood.map((likelihood, rowIndex) => (
-                  <Grid item xs={12} key={likelihood}>
-                    <Grid container spacing={1} alignItems="center">
-                      <Grid item xs={2}>
-                        <Typography variant="caption" fontWeight={600}>{likelihood}</Typography>
-                      </Grid>
-                      {riskData.matrix.values[rowIndex].map((value) => (
-                        <Grid item xs={2} key={`${likelihood}-${value}`}>
-                          <Box sx={{ minHeight: 52, borderRadius: 1, bgcolor: getHeatColor(value), color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
-                            {value}
-                          </Box>
-                        </Grid>
+              <Box sx={{ width: '100%', height: 400 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <ScatterChart margin={{ top: 20, right: 30, left: 30, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      type="number" 
+                      dataKey="x" 
+                      name="Likelihood" 
+                      ticks={[1, 2, 3, 4, 5]} 
+                      tickFormatter={(val) => riskData.matrix.likelihood[val - 1] || ''} 
+                    />
+                    <YAxis 
+                      type="number" 
+                      dataKey="y" 
+                      name="Impact" 
+                      ticks={[1, 2, 3, 4, 5]} 
+                      tickFormatter={(val) => riskData.matrix.impact[val - 1] || ''} 
+                    />
+                    <ZAxis type="number" dataKey="count" range={[100, 800]} name="Number of Risks" />
+                    <Tooltip 
+                      cursor={{ strokeDasharray: '3 3' }} 
+                      formatter={(value, name) => {
+                        if (name === 'Likelihood') return [riskData.matrix.likelihood[value - 1], name]
+                        if (name === 'Impact') return [riskData.matrix.impact[value - 1], name]
+                        return [value, name]
+                      }}
+                    />
+                    <Scatter data={
+                      riskData.matrix.likelihood.flatMap((l, x) => 
+                        riskData.matrix.values[x].map((val, y) => ({
+                          x: x + 1,
+                          y: y + 1,
+                          count: val
+                        }))
+                      ).filter(d => d.count > 0)
+                    }>
+                      {riskData.matrix.likelihood.flatMap((l, x) => 
+                        riskData.matrix.values[x].map((val, y) => ({ x: x + 1, y: y + 1, count: val }))
+                      ).filter(d => d.count > 0).map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={getHeatColor(entry.x + entry.y)} />
                       ))}
-                    </Grid>
-                  </Grid>
-                ))}
-              </Grid>
+                    </Scatter>
+                  </ScatterChart>
+                </ResponsiveContainer>
+              </Box>
             </CardContent>
           </Card>
         </Grid>

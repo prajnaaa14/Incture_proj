@@ -16,6 +16,7 @@ const renderWithStore = (authState, initialPath = '/secure', allowedRoles) => {
           <Route path="/dashboard" element={<div>Dashboard page</div>} />
           <Route path="/notifications" element={<RouteGuard><div>Notifications page</div></RouteGuard>} />
           <Route path="/login" element={<div>Login page</div>} />
+          <Route path="/access-denied" element={<div>Access Denied page</div>} />
         </Routes>
       </MemoryRouter>
     </Provider>
@@ -46,7 +47,7 @@ describe('RouteGuard', () => {
       sessionExpired: false,
     }, '/secure', ['admin'])
 
-    expect(screen.getByText(/dashboard page/i)).toBeInTheDocument()
+    expect(screen.getByText(/access denied page/i)).toBeInTheDocument()
   })
 
   it('renders children for employees on allowed routes', () => {

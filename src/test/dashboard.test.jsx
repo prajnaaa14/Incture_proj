@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import DashboardPage from '../pages/dashboard/DashboardPage'
@@ -7,6 +8,9 @@ import riskReducer from '../store/slices/riskSlice'
 import vendorReducer from '../store/slices/vendorSlice'
 import notificationReducer from '../store/slices/notificationSlice'
 import uiReducer from '../store/slices/uiSlice'
+
+import authReducer from '../store/slices/authSlice'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('recharts', () => {
   const React = require('react')
@@ -39,13 +43,22 @@ const renderDashboard = (preloadedState) => {
       vendor: vendorReducer,
       notification: notificationReducer,
       ui: uiReducer,
+      auth: authReducer,
     },
-    preloadedState,
+    preloadedState: {
+      auth: {
+        user: { name: 'Asha Rao', email: 'asha.rao@company.com', role: 'admin' },
+        isAuthenticated: true
+      },
+      ...preloadedState
+    },
   })
 
   return render(
     <Provider store={store}>
-      <DashboardPage />
+      <BrowserRouter>
+        <DashboardPage />
+      </BrowserRouter>
     </Provider>
   )
 }
@@ -93,5 +106,50 @@ describe('DashboardPage', () => {
 
     expect(screen.getByText(/monthly procurement trend/i)).toBeInTheDocument()
     expect(screen.getByText(/risk trend/i)).toBeInTheDocument()
+  })
+
+  it('allows an employee to open and submit a new request', async () => {
+    const user = userEvent.setup()
+    renderDashboard({
+      auth: {
+        user: { name: 'Asha Rao', email: 'asha.rao@company.com', role: 'employee' },
+        isAuthenticated: true
+      },
+      dashboard: { summary: { revenue: 1000, margin: 10, openDeals: 2, riskExposure: 1 }, trend: [], status: 'succeeded', error: null, updatedAt: '2026-06-29' },
+      risk: { items: [], status: 'succeeded', error: null },
+      vendor: { vendors: [], status: 'succeeded', error: null },
+      notification: { items: [], status: 'succeeded', error: null },
+    })
+
+    // Click "Create Request"
+    const createBtn = screen.getByRole('button', { name: /create request/i })
+    await user.click(createBtn)
+
+    // Check dialog is open
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+    // Submit with empty inputs to trigger warning branch
+    const submitBtn = screen.getByRole('button', { name: /submit request/i })
+    await user.click(submitBtn)
+
+    // Now fill inputs
+    const titleInput = screen.getByLabelText(/request title/i)
+    const amountInput = screen.getByLabelText(/estimated amount/i)
+    
+    await user.type(titleInput, 'New Laptop')
+    await user.type(amountInput, '1500')
+    
+    // Select Department via MUI Select click
+    const deptSelect = screen.getByRole('combobox')
+    await user.click(deptSelect)
+    
+    const option = await screen.findByRole('option', { name: 'IT' })
+    await user.click(option)
+
+    // Submit
+    await user.click(submitBtn)
+
+    // Check dialog is closed
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
   })
 })

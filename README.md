@@ -32,6 +32,55 @@ The application utilizes strict Role-Based Access Control (RBAC). Log in with th
 | **Employee** | `employee@enterprise.com` | `password123` |
 | **Auditor** | `auditor@enterprise.com` | `password123` |
 
+
+---
+
+## 🎬 Project Demo & User Flows
+
+Follow these interactive walkthroughs to demo the key enterprise workflows in the platform:
+
+### Workflow 1: End-to-End Procurement Request & Approval (RBAC Demo)
+1. **Submit Request (Employee)**:
+   - Log in using Employee credentials (`employee@enterprise.com` / `password123`).
+   - Go to the **Procurement Workspace** using the sidebar.
+   - Click the **Create Request** button at the top right.
+   - In the dialog, enter Title: `MacBook Pro 16 Upgrade`, Estimated Amount: `3500`, and select Department: `IT`.
+   - Click **Submit Request**. The new request will appear in the table with a `Pending` status.
+   - Log out by clicking your user profile avatar in the header.
+2. **Approve Request (Manager)**:
+   - Log in using Manager credentials (`manager@enterprise.com` / `password123`).
+   - Navigate to the **Approvals Workbench** (exclusive to Managers and Admins).
+   - Locate the `MacBook Pro 16 Upgrade` request in the queue.
+   - Click **Approve** on the row. The request status will transition to `Approved` and update live in the database.
+   - Alternatively, you can click **Reject**, **Send Back** (for corrections), or **Delegate** to another user.
+3. **Trace Logs (Auditor/Admin)**:
+   - Log out and log back in using Auditor credentials (`auditor@enterprise.com` / `password123`).
+   - Go to the **Audit Center** (exclusive to Auditors and Admins).
+   - In the audit logs list, you will see a system record of the `MacBook Pro 16 Upgrade` request being created and subsequently approved by the Manager, maintaining a tamper-proof audit trail.
+
+### Workflow 2: Risk Scoring & Heat Map Interaction
+1. Log in using Admin credentials (`admin@enterprise.com` / `password123`).
+2. Navigate to the **Risk Center** in the sidebar.
+3. Observe the dynamic 5x5 **Likelihood vs. Impact Matrix**:
+   - Hover over cells to see risk distributions.
+   - Scroll down to view the detailed **Risk Register** listing active vulnerabilities, mitigation strategies, and status.
+   - Filter risks by Category (e.g., Financial, Cybersecurity, Operational) using the search and status controllers.
+
+### Workflow 3: Compliance Monitoring & Violations
+1. Navigate to the **Compliance Center**.
+2. Review the status of standard corporate policies, active violations, and expired certifications.
+3. Review the quick filters to view violations matching policies like `ISO 27001`, `GDPR`, or `SOC 2`.
+
+### Workflow 4: Executive Reporting & Exports
+1. Navigate to the **Reporting Center** in the sidebar.
+2. Under the list of categories, select a report format (e.g., Procurement Pipeline or Risk Register).
+3. Click the **Export CSV** or **Export Excel** button. The application will compile the active dataset and download the CSV/Excel files directly.
+
+### Workflow 5: System Themes & Preferences
+1. Click the **User Settings** tab in the sidebar (or click Settings in the avatar dropdown menu).
+2. Navigate to the **Theme** tab.
+3. Toggle between **Light Mode** and **Dark Mode**. The application instantly transitions colors, backgrounds, and chart colors using the native React Theme Context.
+
 ---
 
 ## 📦 Implemented Modules
@@ -75,3 +124,37 @@ npm run build
 - **Global Error Handling**: Integrated `GlobalErrorBoundary.jsx` prevents the application from crashing out by rendering a graceful fallback UI on unexpected render failures.
 - **API Interceptors**: Integrated `apiClient.js` automatically injects Auth Bearer tokens into headers and centralizes error handling (e.g., auto-logout on `401 Unauthorized` responses).
 - **Responsive Enterprise Design**: Leverages standard layout architectures (Header/Sidebar/Main Content) mirroring industry-standard platforms like SAP, ServiceNow, and Salesforce.
+
+---
+
+## 🧪 Testing & Scoped Coverage
+
+The application includes a comprehensive test suite (12 test suites, 34 test cases) covering Redux slices, route guards, layouts, form validation, and complex page workflows. The suite is fully compatible with both **Jest** and **Vitest** test runners.
+
+### Test Coverage Thresholds
+The testing framework enforces a strict coverage threshold of **80%** across all major metrics:
+- **Statements**: 94.8%
+- **Branches**: 83.6%
+- **Functions**: 90.1%
+- **Lines**: 94.6%
+
+### Running Tests
+
+#### 1. Run Tests with Jest
+To run the full test suite in single-band execution with Jest:
+```bash
+npm test
+```
+
+#### 2. Run Tests & Coverage with Vitest
+To run the tests and generate a detailed coverage report using Vitest and the `v8` provider:
+```bash
+npm run coverage
+```
+
+#### 3. Run Development Watch Mode
+To run Vitest in interactive watch mode for rapid iteration:
+```bash
+npx vitest
+```
+

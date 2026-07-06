@@ -3,11 +3,21 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import vendorReducer, { fetchVendors } from '../store/slices/vendorSlice'
-import VendorPage from '../pages/vendor/VendorPage'
+import VendorsPage from '../pages/vendors/VendorsPage'
+
+import vendorData from '../mocks/vendors.json'
 
 const renderWithProviders = (ui, { store } = {}) => {
   const testStore = store || configureStore({
-    reducer: { vendor: vendorReducer }
+    reducer: { vendor: vendorReducer },
+    preloadedState: {
+      vendor: {
+        items: vendorData,
+        vendors: vendorData,
+        status: 'succeeded',
+        error: null
+      }
+    }
   })
   return render(
     <Provider store={testStore}>
@@ -20,13 +30,13 @@ const renderWithProviders = (ui, { store } = {}) => {
 
 describe('VendorPage', () => {
   it('renders vendor KPIs and table', async () => {
-    renderWithProviders(<VendorPage />)
+    renderWithProviders(<VendorsPage />)
     
-    expect(screen.getByText(/Vendor Directory/i)).toBeInTheDocument()
+    expect(screen.getByText(/Vendor Governance/i)).toBeInTheDocument()
     
     await waitFor(() => {
-      expect(screen.getByText(/Active Vendors/i)).toBeInTheDocument()
-      expect(screen.getByText(/At Risk/i)).toBeInTheDocument()
+      expect(screen.getByText(/Active/i, { selector: 'p' })).toBeInTheDocument()
+      expect(screen.getByText(/High Risk/i, { selector: 'p' })).toBeInTheDocument()
     })
   })
 })

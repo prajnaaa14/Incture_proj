@@ -49,8 +49,10 @@ const CompliancePage = () => {
   const loading = status === 'loading' || status === 'idle'
 
   useEffect(() => {
-    dispatch(fetchComplianceItems())
-  }, [dispatch])
+    if (status === 'idle') {
+      dispatch(fetchComplianceItems())
+    }
+  }, [status, dispatch])
 
   if (loading) {
     return <Box sx={{ p: 3 }}><Skeleton variant="rectangular" height={400} /></Box>

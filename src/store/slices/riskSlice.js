@@ -4,7 +4,7 @@ import { pushSnackbar } from './uiSlice'
 
 const simulateDelay = (ms = 450) => new Promise((resolve) => window.setTimeout(resolve, ms))
 
-export const fetchRiskSignals = createAsyncThunk('risk/fetchRiskSignals', async (_, { dispatch, rejectWithValue }) => {
+export const fetchRiskData = createAsyncThunk('risk/fetchRiskData', async (_, { dispatch, rejectWithValue }) => {
   try {
     await simulateDelay()
     const payload = riskData
@@ -22,7 +22,8 @@ const initialState = {
     matrix: { likelihood: [], impact: [], values: [] },
     trend: [],
     distribution: [],
-    riskList: []
+    riskList: [],
+    metrics: {}
   },
   status: 'idle',
   error: null,
@@ -34,18 +35,22 @@ const riskSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchRiskSignals.pending, (state) => {
+      .addCase(fetchRiskData.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(fetchRiskSignals.fulfilled, (state, action) => {
+      .addCase(fetchRiskData.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = action.payload
+        state.data = {
+          metrics: {},
+          ...action.payload
+        }
       })
-      .addCase(fetchRiskSignals.rejected, (state, action) => {
+      .addCase(fetchRiskData.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })
   },
 })
 
+export const fetchRiskSignals = fetchRiskData
 export default riskSlice.reducer

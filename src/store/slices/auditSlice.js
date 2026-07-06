@@ -4,8 +4,7 @@ import { pushSnackbar } from './uiSlice'
 import mockData from '../../mocks/audit.json'
 
 const simulateDelay = (ms = 450) => new Promise((resolve) => window.setTimeout(resolve, ms))
-
-export const fetchAuditTrail = createAsyncThunk('audit/fetchAuditTrail', async (_, { dispatch, rejectWithValue }) => {
+export const fetchAuditData = createAsyncThunk('audit/fetchAuditData', async (_, { dispatch, rejectWithValue }) => {
   try {
     await simulateDelay()
     dispatch(pushSnackbar({ message: 'Audit trail loaded.', severity: 'success' }))
@@ -19,6 +18,7 @@ export const fetchAuditTrail = createAsyncThunk('audit/fetchAuditTrail', async (
 
 const initialState = {
   entries: [],
+  data: null,
   status: 'idle',
   error: null,
 }
@@ -29,18 +29,20 @@ const auditSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAuditTrail.pending, (state) => {
+      .addCase(fetchAuditData.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(fetchAuditTrail.fulfilled, (state, action) => {
+      .addCase(fetchAuditData.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.entries = action.payload
+        state.data = action.payload
       })
-      .addCase(fetchAuditTrail.rejected, (state, action) => {
+      .addCase(fetchAuditData.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })
   },
 })
 
+export const fetchAuditTrail = fetchAuditData
 export default auditSlice.reducer

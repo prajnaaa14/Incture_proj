@@ -18,6 +18,7 @@ export const fetchVendors = createAsyncThunk('vendor/fetchVendors', async (_, { 
 })
 
 const initialState = {
+  items: [],
   vendors: [],
   status: 'idle',
   error: null,
@@ -34,6 +35,7 @@ const vendorSlice = createSlice({
       })
       .addCase(fetchVendors.fulfilled, (state, action) => {
         state.status = 'succeeded'
+        state.items = action.payload.vendors
         state.vendors = action.payload.vendors
       })
       .addCase(fetchVendors.rejected, (state, action) => {

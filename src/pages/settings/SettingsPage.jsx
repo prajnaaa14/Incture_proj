@@ -61,16 +61,16 @@ const SettingsPage = () => {
         <Card>
           <CardContent>
             <Grid container spacing={2} sx={{ flex: 1 }}>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField label="Full Name" fullWidth defaultValue={user?.name || ''} />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField label="Email" fullWidth defaultValue={user?.email || ''} />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField label="Department" fullWidth defaultValue={user?.department || ''} />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField label="Role" fullWidth defaultValue={user?.role || ''} sx={{ textTransform: 'capitalize' }} />
               </Grid>
             </Grid>
@@ -97,7 +97,7 @@ const SettingsPage = () => {
         <Card>
           <CardContent>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
                   <InputLabel>Language</InputLabel>
                   <Select defaultValue="en" label="Language">
@@ -107,7 +107,7 @@ const SettingsPage = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
                   <InputLabel>Timezone</InputLabel>
                   <Select defaultValue="utc" label="Timezone">
@@ -117,7 +117,7 @@ const SettingsPage = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <FormControlLabel control={<Checkbox defaultChecked />} label="Enable email and in-app notifications" />
               </Grid>
             </Grid>

@@ -5,9 +5,19 @@ import { BrowserRouter } from 'react-router-dom'
 import auditReducer, { fetchAuditData } from '../store/slices/auditSlice'
 import AuditPage from '../pages/audit/AuditPage'
 
+import auditData from '../mocks/audit.json'
+
 const renderWithProviders = (ui, { store } = {}) => {
   const testStore = store || configureStore({
-    reducer: { audit: auditReducer }
+    reducer: { audit: auditReducer },
+    preloadedState: {
+      audit: {
+        entries: auditData,
+        data: auditData,
+        status: 'succeeded',
+        error: null
+      }
+    }
   })
   return render(
     <Provider store={testStore}>
@@ -22,11 +32,11 @@ describe('AuditPage', () => {
   it('renders audit center panels', async () => {
     renderWithProviders(<AuditPage />)
     
-    expect(screen.getByText(/Audit & Control/i)).toBeInTheDocument()
+    expect(screen.getByText(/Audit Center/i)).toBeInTheDocument()
     
     await waitFor(() => {
-      expect(screen.getByText(/Audit Logs/i)).toBeInTheDocument()
-      expect(screen.getByText(/Recent Activities/i)).toBeInTheDocument()
+      expect(screen.getByText(/Audit Log/i, { selector: 'h6' })).toBeInTheDocument()
+      expect(screen.getByRole('tab', { name: /User Activity/i })).toBeInTheDocument()
     })
   })
 })

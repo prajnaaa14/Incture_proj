@@ -213,13 +213,13 @@ const DashboardPage = () => {
       </Grid>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={8}>
           <Card>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
                 Monthly Procurement Trend
               </Typography>
-              <Box sx={{ width: '100%', height: 320 }}>
+              <Box sx={{ width: '100%', height: 400 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={monthlyTrend} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -235,13 +235,13 @@ const DashboardPage = () => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={4}>
           <Card>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
                 Compliance Trend
               </Typography>
-              <Box sx={{ width: '100%', height: 320 }}>
+              <Box sx={{ width: '100%', height: 400 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={complianceTrend} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -255,14 +255,16 @@ const DashboardPage = () => {
             </CardContent>
           </Card>
         </Grid>
-
-        <Grid item xs={12} lg={6}>
+      </Grid>
+      
+      <Grid container spacing={3}>
+        <Grid item xs={12} lg={7}>
           <Card>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
                 {role === 'auditor' ? 'Audit Violations by Department' : 'Department Spending'}
               </Typography>
-              <Box sx={{ width: '100%', height: 320 }}>
+              <Box sx={{ width: '100%', height: 400 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={departmentSpending} margin={{ top: 10, right: 30, left: 30, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -277,13 +279,13 @@ const DashboardPage = () => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={5}>
           <Card>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
                 Risk Trend
               </Typography>
-              <Box sx={{ width: '100%', height: 320 }}>
+              <Box sx={{ width: '100%', height: 400 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={[
                     { month: 'Jan', value: 4.1 },

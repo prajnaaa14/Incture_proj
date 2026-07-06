@@ -35,6 +35,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProcurementPipeline, addProcurementRequest } from '../../store/slices/procurementSlice'
 import { pushSnackbar } from '../../store/slices/uiSlice'
+import { useNavigate } from 'react-router-dom'
 
 const statusColors = {
   Pending: 'warning',
@@ -72,6 +73,7 @@ const ProcurementPage = () => {
   const [newRequest, setNewRequest] = useState({ title: '', amount: '', department: '' })
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { items: requests, status } = useSelector((state) => state.procurement)
   const user = useSelector((state) => state.auth.user)
   const loading = status === 'loading' || status === 'idle'
@@ -136,8 +138,8 @@ const ProcurementPage = () => {
   }, [])
 
   const handleView = useCallback((requestId) => {
-    window.location.assign(`/procurement/${requestId}`)
-  }, [])
+    navigate(`/procurement/${requestId}`)
+  }, [navigate])
 
   const exportCsv = useCallback(() => {
     const rows = sortedRows.map((request) => ({
@@ -209,18 +211,25 @@ const ProcurementPage = () => {
             placeholder="Search ID, title, or department"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchRounded sx={{ color: 'text.secondary' }} />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchRounded sx={{ color: 'text.secondary' }} />
+                  </InputAdornment>
+                ),
+              }
             }}
           />
 
           <FormControl size="small" sx={{ minWidth: 180 }}>
-            <InputLabel>Status</InputLabel>
-            <Select value={statusFilter} label="Status" onChange={(event) => setStatusFilter(event.target.value)}>
+            <InputLabel id="status-filter-label">Status</InputLabel>
+            <Select 
+              labelId="status-filter-label"
+              value={statusFilter} 
+              label="Status" 
+              onChange={(event) => setStatusFilter(event.target.value)}
+            >
               <MenuItem value="All">All</MenuItem>
               <MenuItem value="Pending">Pending</MenuItem>
               <MenuItem value="Approved">Approved</MenuItem>
@@ -235,7 +244,7 @@ const ProcurementPage = () => {
             size="small" 
             value={startDate} 
             onChange={(event) => setStartDate(event.target.value)} 
-            InputLabelProps={{ shrink: true }}
+            slotProps={{ inputLabel: { shrink: true } }}
             sx={{ 
               minWidth: 140,
               '& input': { display: 'flex', alignItems: 'center', height: '1.4375em' },
@@ -249,7 +258,7 @@ const ProcurementPage = () => {
             size="small" 
             value={endDate} 
             onChange={(event) => setEndDate(event.target.value)} 
-            InputLabelProps={{ shrink: true }}
+            slotProps={{ inputLabel: { shrink: true } }}
             sx={{ 
               minWidth: 140,
               '& input': { display: 'flex', alignItems: 'center', height: '1.4375em' },
@@ -337,8 +346,9 @@ const ProcurementPage = () => {
               onChange={(e) => setNewRequest({ ...newRequest, amount: e.target.value })} 
             />
             <FormControl fullWidth>
-              <InputLabel>Department</InputLabel>
+              <InputLabel id="dialog-dept-label">Department</InputLabel>
               <Select 
+                labelId="dialog-dept-label"
                 value={newRequest.department} 
                 label="Department" 
                 onChange={(e) => setNewRequest({ ...newRequest, department: e.target.value })}

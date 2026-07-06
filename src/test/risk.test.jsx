@@ -5,9 +5,21 @@ import { BrowserRouter } from 'react-router-dom'
 import riskReducer, { fetchRiskData } from '../store/slices/riskSlice'
 import RiskPage from '../pages/risk/RiskPage'
 
+import riskData from '../mocks/riskData.json'
+
 const renderWithProviders = (ui, { store } = {}) => {
   const testStore = store || configureStore({
-    reducer: { risk: riskReducer }
+    reducer: { risk: riskReducer },
+    preloadedState: {
+      risk: {
+        data: {
+          metrics: {},
+          ...riskData
+        },
+        status: 'succeeded',
+        error: null
+      }
+    }
   })
   return render(
     <Provider store={testStore}>
@@ -32,8 +44,8 @@ describe('RiskPage', () => {
     expect(screen.getByText(/Risk Center/i)).toBeInTheDocument()
     
     await waitFor(() => {
-      expect(screen.getByText(/Total Risks/i)).toBeInTheDocument()
-      expect(screen.getByText(/Critical/i)).toBeInTheDocument()
+      expect(screen.getByText(/Open Risks/i)).toBeInTheDocument()
+      expect(screen.getByText(/Mitigating/i, { selector: 'p' })).toBeInTheDocument()
     })
   })
 })

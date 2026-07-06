@@ -5,9 +5,18 @@ import { BrowserRouter } from 'react-router-dom'
 import complianceReducer, { fetchComplianceItems } from '../store/slices/complianceSlice'
 import CompliancePage from '../pages/compliance/CompliancePage'
 
+import complianceData from '../mocks/compliance.json'
+
 const renderWithProviders = (ui, { store } = {}) => {
   const testStore = store || configureStore({
-    reducer: { compliance: complianceReducer }
+    reducer: { compliance: complianceReducer },
+    preloadedState: {
+      compliance: {
+        items: complianceData,
+        status: 'succeeded',
+        error: null
+      }
+    }
   })
   return render(
     <Provider store={testStore}>
@@ -25,8 +34,8 @@ describe('CompliancePage', () => {
     expect(screen.getByText(/Compliance Center/i)).toBeInTheDocument()
     
     await waitFor(() => {
-      expect(screen.getByText(/Overall Score/i)).toBeInTheDocument()
-      expect(screen.getByText(/Missing Documents/i)).toBeInTheDocument()
+      expect(screen.getByText(/Overall Score/i, { selector: 'p' })).toBeInTheDocument()
+      expect(screen.getByText(/Missing Documents/i, { selector: 'p' })).toBeInTheDocument()
     })
   })
 })

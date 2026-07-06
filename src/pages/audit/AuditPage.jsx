@@ -59,8 +59,10 @@ const AuditPage = () => {
   const [tab, setTab] = useState('log')
 
   useEffect(() => {
-    dispatch(fetchAuditTrail())
-  }, [dispatch])
+    if (status === 'idle') {
+      dispatch(fetchAuditTrail())
+    }
+  }, [status, dispatch])
 
   const exportLabel = useMemo(() => {
     if (tab === 'log') return 'Audit Log'

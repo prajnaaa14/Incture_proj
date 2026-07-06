@@ -8,6 +8,7 @@ const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
 const ForgotPasswordPage = lazy(() => import('../pages/auth/ForgotPasswordPage'))
 const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'))
 const SessionExpiredPage = lazy(() => import('../pages/auth/SessionExpiredPage'))
+const AccessDeniedPage = lazy(() => import('../pages/auth/AccessDeniedPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
 const DashboardPage = lazy(() => import('../pages/dashboard/DashboardPage'))
 const ProcurementPage = lazy(() => import('../pages/procurement/ProcurementPage'))
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: '/session-expired',
     element: withSuspense(<SessionExpiredPage />),
+  },
+  {
+    path: '/access-denied',
+    element: withSuspense(<AccessDeniedPage />),
   },
   {
     path: '/',

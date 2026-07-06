@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 const schema = yup.object({
-  email: yup.string().email('Enter a valid email').required('Email is required'),
+  email: yup.string().required('Email is required').email('Enter a valid email'),
 })
 
 const ForgotPasswordPage = () => {
