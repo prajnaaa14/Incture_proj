@@ -34,7 +34,7 @@ const complianceSlice = createSlice({
       })
       .addCase(fetchComplianceItems.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.items = action.payload.items
+        state.items = action.payload
       })
       .addCase(fetchComplianceItems.rejected, (state, action) => {
         state.status = 'failed'

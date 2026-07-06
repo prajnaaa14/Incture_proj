@@ -41,8 +41,8 @@ describe('auth forms', () => {
     const user = userEvent.setup()
     renderWithProviders(<LoginPage />)
 
-    await user.type(screen.getByLabelText(/email/i), 'asha.rao@enterprise.com')
-    await user.type(screen.getByLabelText(/password/i), 'Admin123!')
+    await user.type(screen.getByLabelText(/email/i), 'admin@enterprise.com')
+    await user.type(screen.getByLabelText(/password/i), 'password123')
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     await waitFor(() => {

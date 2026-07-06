@@ -3,7 +3,6 @@ import {
   Brightness7Rounded,
   LockRounded,
   PersonRounded,
-  PaletteRounded,
   SettingsRounded,
   TranslateRounded,
 } from '@mui/icons-material'
@@ -29,10 +28,12 @@ import {
 import { useState } from 'react'
 import { useThemeMode } from '../../theme/ThemeModeContext'
 
+import { useSelector } from 'react-redux'
+
 const SettingsPage = () => {
   const [tab, setTab] = useState('profile')
-  const [accentColor, setAccentColor] = useState('#2563eb')
   const { mode, toggleMode } = useThemeMode()
+  const user = useSelector((state) => state.auth.user)
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -59,29 +60,20 @@ const SettingsPage = () => {
       {tab === 'profile' && (
         <Card>
           <CardContent>
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} alignItems={{ xs: 'stretch', md: 'flex-start' }}>
-              <Stack alignItems="center" spacing={1.5}>
-                <Avatar sx={{ width: 96, height: 96, bgcolor: 'primary.main' }}>
-                  <PersonRounded sx={{ fontSize: 40 }} />
-                </Avatar>
-                <Button variant="outlined">Upload Avatar</Button>
-              </Stack>
-
-              <Grid container spacing={2} sx={{ flex: 1 }}>
-                <Grid item xs={12} md={6}>
-                  <TextField label="Full Name" fullWidth defaultValue="Alex Morgan" />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField label="Email" fullWidth defaultValue="alex.morgan@enterprise.com" />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField label="Phone" fullWidth defaultValue="+1 415 555 0187" />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField label="Role" fullWidth defaultValue="Operations Lead" />
-                </Grid>
+            <Grid container spacing={2} sx={{ flex: 1 }}>
+              <Grid item xs={12} md={6}>
+                <TextField label="Full Name" fullWidth defaultValue={user?.name || ''} />
               </Grid>
-            </Stack>
+              <Grid item xs={12} md={6}>
+                <TextField label="Email" fullWidth defaultValue={user?.email || ''} />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField label="Department" fullWidth defaultValue={user?.department || ''} />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField label="Role" fullWidth defaultValue={user?.role || ''} sx={{ textTransform: 'capitalize' }} />
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       )}
@@ -136,19 +128,10 @@ const SettingsPage = () => {
       {tab === 'theme' && (
         <Card>
           <CardContent>
-            <Stack spacing={3}>
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'stretch', sm: 'center' }}>
-                <Button variant={mode === 'dark' ? 'contained' : 'outlined'} startIcon={mode === 'dark' ? <Brightness4Rounded /> : <Brightness7Rounded />} onClick={toggleMode}>
-                  {mode === 'dark' ? 'Dark Mode' : 'Light Mode'}
-                </Button>
-                <Button variant="outlined" startIcon={<PaletteRounded />} sx={{ color: accentColor, borderColor: accentColor }} onClick={() => setAccentColor('#2563eb')}>
-                  Reset Accent
-                </Button>
-              </Stack>
-              <Stack spacing={1}>
-                <Typography variant="body2" color="text.secondary">Accent Color</Typography>
-                <TextField type="color" value={accentColor} onChange={(event) => setAccentColor(event.target.value)} sx={{ width: 120 }} />
-              </Stack>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'stretch', sm: 'center' }}>
+              <Button variant={mode === 'dark' ? 'contained' : 'outlined'} startIcon={mode === 'dark' ? <Brightness4Rounded /> : <Brightness7Rounded />} onClick={toggleMode}>
+                {mode === 'dark' ? 'Dark Mode' : 'Light Mode'}
+              </Button>
             </Stack>
           </CardContent>
         </Card>

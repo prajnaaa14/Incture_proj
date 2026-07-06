@@ -40,6 +40,7 @@ import { useSelector } from 'react-redux'
 const RootRedirect = () => {
   const user = useSelector((state) => state.auth.user)
   if (user?.role === 'auditor') return <Navigate to="/audit" replace />
+  if (user?.role === 'compliance') return <Navigate to="/compliance" replace />
   return <Navigate to="/dashboard" replace />
 }
 
@@ -78,18 +79,18 @@ const router = createBrowserRouter([
       </RouteGuard>
     ),
     children: [
-      { path: 'dashboard', element: withProtectedRoute(<DashboardPage />, ['admin', 'manager', 'employee', 'auditor']) },
-      { path: 'procurement', element: withProtectedRoute(<ProcurementPage />, ['admin', 'manager', 'employee']) },
-      { path: 'procurement/:id', element: withProtectedRoute(<ProcurementDetailPage />, ['admin', 'manager', 'employee']) },
-      { path: 'vendors', element: withProtectedRoute(<VendorsPage />, ['admin', 'manager']) },
-      { path: 'vendors/:id', element: withProtectedRoute(<VendorDetailPage />, ['admin', 'manager']) },
-      { path: 'risk', element: withProtectedRoute(<RiskPage />, ['admin', 'manager', 'employee', 'auditor']) },
-      { path: 'compliance', element: withProtectedRoute(<CompliancePage />, ['admin', 'manager', 'employee', 'auditor']) },
+      { path: 'dashboard', element: withProtectedRoute(<DashboardPage />, ['admin', 'manager', 'employee']) },
+      { path: 'procurement', element: withProtectedRoute(<ProcurementPage />, ['admin', 'employee', 'manager']) },
+      { path: 'procurement/:id', element: withProtectedRoute(<ProcurementDetailPage />, ['admin', 'employee', 'manager']) },
+      { path: 'vendors', element: withProtectedRoute(<VendorsPage />, ['admin']) },
+      { path: 'vendors/:id', element: withProtectedRoute(<VendorDetailPage />, ['admin']) },
+      { path: 'risk', element: withProtectedRoute(<RiskPage />, ['admin']) },
+      { path: 'compliance', element: withProtectedRoute(<CompliancePage />, ['admin', 'compliance']) },
       { path: 'audit', element: withProtectedRoute(<AuditPage />, ['admin', 'auditor']) },
       { path: 'approvals', element: withProtectedRoute(<ApprovalsPage />, ['admin', 'manager']) },
       { path: 'notifications', element: withProtectedRoute(<NotificationsPage />, ['admin', 'manager', 'employee']) },
-      { path: 'reports', element: withProtectedRoute(<ReportsPage />, ['admin', 'manager', 'auditor']) },
-      { path: 'settings', element: withProtectedRoute(<SettingsPage />, ['admin', 'manager', 'employee', 'auditor']) },
+      { path: 'reports', element: withProtectedRoute(<ReportsPage />, ['admin', 'auditor']) },
+      { path: 'settings', element: withProtectedRoute(<SettingsPage />, ['admin', 'manager', 'employee', 'auditor', 'compliance']) },
     ],
   },
   {

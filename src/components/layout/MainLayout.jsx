@@ -14,9 +14,11 @@ import {
   ReportRounded,
   SecurityRounded,
   SettingsRounded,
+  AccountCircleRounded,
 } from '@mui/icons-material'
 import {
   AppBar,
+  Avatar,
   Badge,
   Box,
   Button,
@@ -34,6 +36,9 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
+  Divider,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -67,6 +72,8 @@ const MainLayout = ({ children, actionSlot }) => {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(true)
   const [confirmLogoutOpen, setConfirmLogoutOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
+  
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -83,13 +90,16 @@ const MainLayout = ({ children, actionSlot }) => {
   const visibleNavItems = navItems.filter((item) => {
     const pathKey = item.path.replace('/', '')
     if (role === 'employee') {
-      return ['dashboard', 'procurement'].includes(pathKey)
+      return ['dashboard', 'procurement', 'notifications', 'settings'].includes(pathKey)
     }
     if (role === 'manager') {
-      return ['dashboard', 'approvals'].includes(pathKey)
+      return ['dashboard', 'approvals', 'notifications', 'procurement', 'settings'].includes(pathKey)
     }
     if (role === 'auditor') {
-      return ['audit', 'reports'].includes(pathKey)
+      return ['audit', 'reports', 'settings'].includes(pathKey)
+    }
+    if (role === 'compliance') {
+      return ['compliance', 'settings'].includes(pathKey)
     }
     return true
   })
@@ -101,6 +111,9 @@ const MainLayout = ({ children, actionSlot }) => {
     setConfirmLogoutOpen(false)
     navigate('/login')
   }
+
+  const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget)
+  const handleProfileMenuClose = () => setAnchorEl(null)
 
   const drawerContent = (
     <Box sx={{ height: '100%', pt: 1 }}>
@@ -137,7 +150,7 @@ const MainLayout = ({ children, actionSlot }) => {
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
-      <AppBar position="sticky" elevation={0}>
+      <AppBar position="sticky" elevation={0} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar sx={{ gap: 1.5 }}>
           <IconButton edge="start" color="inherit" onClick={() => (isMobile ? setMobileOpen((value) => !value) : setCollapsed((value) => !value))} aria-label="toggle sidebar">
             {isMobile ? <MenuOpenRounded /> : collapsed ? <ChevronRight /> : <MenuOpenRounded />}
@@ -162,73 +175,116 @@ const MainLayout = ({ children, actionSlot }) => {
             <IconButton color="inherit" onClick={toggleMode} aria-label="toggle color mode">
               {mode === 'dark' ? <Brightness7Rounded /> : <Brightness4Rounded />}
             </IconButton>
+            
             <IconButton color="inherit" onClick={() => navigate('/notifications')} aria-label="notifications">
               <Badge badgeContent={unreadNotificationCount} color="error">
                 <NotificationsRounded />
               </Badge>
             </IconButton>
-            <IconButton color="inherit" onClick={() => navigate('/settings')} aria-label="profile">
-              <ManageAccountsRounded />
-            </IconButton>
+            
             {actionSlot}
-            <Button
-              color="inherit"
-              size="small"
-              startIcon={<LogoutRounded />}
-              onClick={() => setConfirmLogoutOpen(true)}
-              sx={{ ml: 0.5 }}
+            
+            <IconButton color="inherit" onClick={handleProfileMenuOpen} aria-label="profile" sx={{ ml: 1, p: 0.5 }}>
+              <AccountCircleRounded sx={{ fontSize: 32 }} />
+            </IconButton>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleProfileMenuClose}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              PaperProps={{ sx: { width: 220, mt: 1.5, borderRadius: 2 } }}
             >
-              Logout
-            </Button>
+              <Box sx={{ px: 2, py: 1.5 }}>
+                <Typography variant="subtitle2" fontWeight={700} noWrap>{user?.name || 'User'}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ textTransform: 'capitalize' }} noWrap>{user?.role || 'Guest'}</Typography>
+              </Box>
+              <Divider sx={{ mb: 1 }} />
+              {role === 'admin' && (
+                <MenuItem onClick={() => { handleProfileMenuClose(); navigate('/settings'); }} sx={{ py: 1.5 }}>
+                  <ListItemIcon><SettingsRounded fontSize="small" /></ListItemIcon>
+                  Settings
+                </MenuItem>
+              )}
+              <MenuItem onClick={() => { handleProfileMenuClose(); setConfirmLogoutOpen(true); }} sx={{ py: 1.5 }}>
+                <ListItemIcon><LogoutRounded fontSize="small" color="error" /></ListItemIcon>
+                <Typography color="error">Logout</Typography>
+              </MenuItem>
+            </Menu>
           </Box>
         </Toolbar>
       </AppBar>
 
       <Box sx={{ display: 'flex', flex: 1 }}>
-        <Drawer
-          variant={isMobile ? 'persistent' : 'permanent'}
-          open={isMobile ? mobileOpen : true}
-          onClose={() => setMobileOpen(false)}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            width: effectiveSidebarWidth,
-            flexShrink: 0,
-            transition: 'width 0.2s ease-in-out',
-            '& .MuiDrawer-paper': {
-              width: effectiveSidebarWidth,
-              boxSizing: 'border-box',
-              transition: 'width 0.2s ease-in-out',
-              overflowX: 'hidden',
-              paddingTop: 1,
-              top: isMobile ? 0 : appBarHeight,
-              height: isMobile ? '100%' : `calc(100% - ${appBarHeight}px)`,
-            },
-          }}
-        >
-          {drawerContent}
-        </Drawer>
-
-        <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', ml: isMobile ? (mobileOpen ? `${drawerWidth}px` : 0) : `${sidebarWidth}px` }}>
-          {globalLoading ? <LinearProgress color="primary" sx={{ width: '100%' }} /> : null}
-          <Container maxWidth="xl" sx={{ py: 3, flex: 1 }}>
-            {children || <Outlet />}
-          </Container>
-
-          <Box
-            component="footer"
+        {!isMobile && (
+          <Box sx={{ width: effectiveSidebarWidth, flexShrink: 0, transition: 'width 0.2s ease-in-out' }}>
+            <Drawer
+              variant="permanent"
+              sx={{
+                '& .MuiDrawer-paper': {
+                  position: 'sticky',
+                  top: appBarHeight,
+                  height: `calc(100vh - ${appBarHeight}px)`,
+                  width: effectiveSidebarWidth,
+                  boxSizing: 'border-box',
+                  transition: 'width 0.2s ease-in-out',
+                  overflowX: 'hidden',
+                  borderRight: 1,
+                  borderColor: 'divider',
+                },
+              }}
+            >
+              {drawerContent}
+            </Drawer>
+          </Box>
+        )}
+        
+        {isMobile && (
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={() => setMobileOpen(false)}
+            ModalProps={{ keepMounted: true }}
             sx={{
-              borderTop: 1,
-              borderColor: 'divider',
-              px: { xs: 2, md: 3 },
-              py: 2.2,
-              bgcolor: 'background.paper',
+              '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box' }
             }}
           >
-            <Typography variant="body2" color="text.secondary">
-              © 2026 Enterprise Console. Prepared for modern analytics and CRM workflows.
-            </Typography>
-          </Box>
+            {drawerContent}
+          </Drawer>
+        )}
+
+        <Box 
+          component="main" 
+          sx={{ 
+            flexGrow: 1, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            width: isMobile ? '100%' : `calc(100% - ${effectiveSidebarWidth}px)`,
+            overflowX: 'hidden'
+          }}
+        >
+          {globalLoading ? <LinearProgress color="primary" sx={{ width: '100%' }} /> : null}
+          <Container maxWidth="xl" sx={{ py: 3, flex: 1, display: 'flex', flexDirection: 'column' }}>
+            {children || <Outlet />}
+          </Container>
         </Box>
+      </Box>
+
+      <Box
+        component="footer"
+        sx={{
+          borderTop: 1,
+          borderColor: 'divider',
+          px: { xs: 2, md: 3 },
+          py: 2.2,
+          bgcolor: 'background.paper',
+          textAlign: 'center'
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
+          © 2026 Enterprise Console. Prepared for modern analytics and CRM workflows.
+        </Typography>
       </Box>
 
       <Dialog open={confirmLogoutOpen} onClose={() => setConfirmLogoutOpen(false)} maxWidth="sm" fullWidth>

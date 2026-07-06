@@ -59,10 +59,8 @@ const AuditPage = () => {
   const [tab, setTab] = useState('log')
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchAuditTrail())
-    }
-  }, [status, dispatch])
+    dispatch(fetchAuditTrail())
+  }, [dispatch])
 
   const exportLabel = useMemo(() => {
     if (tab === 'log') return 'Audit Log'
@@ -120,7 +118,7 @@ const AuditPage = () => {
             <Typography variant="h6" fontWeight={700} gutterBottom>
               Audit Log
             </Typography>
-            <TableContainer component={Paper} variant="outlined">
+            <TableContainer component={Paper} variant="outlined" sx={{ overflowX: 'auto' }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -158,7 +156,7 @@ const AuditPage = () => {
             <Typography variant="h6" fontWeight={700} gutterBottom>
               User Activity
             </Typography>
-            <TableContainer component={Paper} variant="outlined">
+            <TableContainer component={Paper} variant="outlined" sx={{ overflowX: 'auto' }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -190,7 +188,7 @@ const AuditPage = () => {
             <Typography variant="h6" fontWeight={700} gutterBottom>
               System Logs
             </Typography>
-            <TableContainer component={Paper} variant="outlined">
+            <TableContainer component={Paper} variant="outlined" sx={{ overflowX: 'auto' }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -224,7 +222,7 @@ const AuditPage = () => {
             <Typography variant="h6" fontWeight={700} gutterBottom>
               Audit Reports
             </Typography>
-            <TableContainer component={Paper} variant="outlined">
+            <TableContainer component={Paper} variant="outlined" sx={{ overflowX: 'auto' }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>

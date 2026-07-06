@@ -32,7 +32,14 @@ const LoginPage = () => {
     const result = await dispatch(loginThunk({ email: data.email, password: data.password }))
 
     if (loginThunk.fulfilled.match(result)) {
-      const from = location.state?.from?.pathname || '/dashboard'
+      let from = location.state?.from?.pathname || '/'
+      // If the user's previous session left them on the dashboard (default admin page)
+      // but their new login role doesn't have access, they'll get an Access Denied error.
+      // We route '/dashboard' through the root '/' so RootRedirect can properly direct them.
+      if (from === '/dashboard') {
+        from = '/'
+      }
+      
       navigate(from, { replace: true })
     } else {
       setSubmitError(result.payload || 'Unable to sign in')

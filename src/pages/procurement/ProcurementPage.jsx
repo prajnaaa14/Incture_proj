@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Pagination,
@@ -32,7 +33,7 @@ import {
 } from '@mui/material'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProcurementPipeline } from '../../store/slices/procurementSlice'
+import { fetchProcurementPipeline, addProcurementRequest } from '../../store/slices/procurementSlice'
 import { pushSnackbar } from '../../store/slices/uiSlice'
 
 const statusColors = {
@@ -72,6 +73,7 @@ const ProcurementPage = () => {
 
   const dispatch = useDispatch()
   const { items: requests, status } = useSelector((state) => state.procurement)
+  const user = useSelector((state) => state.auth.user)
   const loading = status === 'loading' || status === 'idle'
 
   useEffect(() => {
@@ -170,6 +172,14 @@ const ProcurementPage = () => {
       dispatch(pushSnackbar({ message: 'Please fill in all fields', severity: 'warning' }))
       return
     }
+
+    dispatch(addProcurementRequest({
+      title: newRequest.title,
+      amount: newRequest.amount,
+      department: newRequest.department,
+      createdBy: user?.name || 'Current User'
+    }))
+
     dispatch(pushSnackbar({ message: 'Procurement request submitted successfully!', severity: 'success' }))
     setCreateDialogOpen(false)
     setNewRequest({ title: '', amount: '', department: '' })
@@ -199,7 +209,13 @@ const ProcurementPage = () => {
             placeholder="Search ID, title, or department"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            InputProps={{ startAdornment: <SearchRounded sx={{ mr: 1, color: 'text.secondary' }} /> }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchRounded sx={{ color: 'text.secondary' }} />
+                </InputAdornment>
+              ),
+            }}
           />
 
           <FormControl size="small" sx={{ minWidth: 180 }}>
@@ -213,8 +229,34 @@ const ProcurementPage = () => {
             </Select>
           </FormControl>
 
-          <TextField label="From" type="date" size="small" value={startDate} onChange={(event) => setStartDate(event.target.value)} InputLabelProps={{ shrink: true }} />
-          <TextField label="To" type="date" size="small" value={endDate} onChange={(event) => setEndDate(event.target.value)} InputLabelProps={{ shrink: true }} />
+          <TextField 
+            label="From" 
+            type="date" 
+            size="small" 
+            value={startDate} 
+            onChange={(event) => setStartDate(event.target.value)} 
+            InputLabelProps={{ shrink: true }}
+            sx={{ 
+              minWidth: 140,
+              '& input': { display: 'flex', alignItems: 'center', height: '1.4375em' },
+              '& input::-webkit-datetime-edit': { color: startDate ? 'inherit' : 'transparent' },
+              '& input:focus::-webkit-datetime-edit': { color: 'inherit' }
+            }}
+          />
+          <TextField 
+            label="To" 
+            type="date" 
+            size="small" 
+            value={endDate} 
+            onChange={(event) => setEndDate(event.target.value)} 
+            InputLabelProps={{ shrink: true }}
+            sx={{ 
+              minWidth: 140,
+              '& input': { display: 'flex', alignItems: 'center', height: '1.4375em' },
+              '& input::-webkit-datetime-edit': { color: endDate ? 'inherit' : 'transparent' },
+              '& input:focus::-webkit-datetime-edit': { color: 'inherit' }
+            }}
+          />
 
           <Button variant="outlined" startIcon={<DownloadRounded />} onClick={exportCsv} sx={{ minWidth: 'auto', whiteSpace: 'nowrap' }}>
             Export CSV
@@ -222,7 +264,7 @@ const ProcurementPage = () => {
         </Stack>
       </Paper>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
         <Table>
           <TableHead>
             <TableRow>

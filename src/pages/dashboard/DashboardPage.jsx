@@ -7,8 +7,9 @@ import {
   NotificationsRounded,
   ReportProblemRounded,
   ShieldRounded,
+  AddRounded,
 } from '@mui/icons-material'
-import { Box, Card, CardContent, Chip, Grid, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, Card, CardContent, Chip, Grid, Skeleton, Stack, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import {
   Area,
   AreaChart,
@@ -26,14 +27,17 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import requests from '../../mocks/requests.json'
 import riskData from '../../mocks/riskData.json'
 import { fetchDashboardMetrics } from '../../store/slices/dashboardSlice'
 import { fetchNotifications } from '../../store/slices/notificationSlice'
 import { fetchRiskSignals } from '../../store/slices/riskSlice'
 import { fetchVendors } from '../../store/slices/vendorSlice'
+import { addProcurementRequest } from '../../store/slices/procurementSlice'
+import { pushSnackbar } from '../../store/slices/uiSlice'
 
 const departmentSpending = [
   { department: 'IT', amount: 320000 },
@@ -59,7 +63,7 @@ const DashboardPage = () => {
   const dashboardSummary = useSelector((state) => state.dashboard.summary)
   const dashboardTrend = useSelector((state) => state.dashboard.trend)
   const riskStatus = useSelector((state) => state.risk.status)
-  const riskSignals = useSelector((state) => state.risk.items)
+  const riskSignals = useSelector((state) => state.risk.data?.riskList)
   const vendorStatus = useSelector((state) => state.vendor.status)
   const vendors = useSelector((state) => state.vendor.vendors)
   const notificationStatus = useSelector((state) => state.notification.status)
@@ -133,15 +137,55 @@ const DashboardPage = () => {
     )
   }
 
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
+  const [newRequest, setNewRequest] = useState({ title: '', amount: '', department: '' })
+  const navigate = useNavigate()
+
+  const handleCreateSubmit = () => {
+    if (!newRequest.title || !newRequest.amount || !newRequest.department) {
+      dispatch(pushSnackbar({ message: 'Please fill in all fields', severity: 'warning' }))
+      return
+    }
+    
+    dispatch(addProcurementRequest({
+      title: newRequest.title,
+      amount: newRequest.amount,
+      department: newRequest.department,
+      createdBy: user?.name || 'Current User'
+    }))
+
+    dispatch(pushSnackbar({ message: 'Procurement request submitted successfully!', severity: 'success' }))
+    setCreateDialogOpen(false)
+    setNewRequest({ title: '', amount: '', department: '' })
+    // Optionally navigate to procurement to track status
+    navigate('/procurement')
+  }
+
+  const complianceTrend = [
+    { month: 'Jan', score: 78 },
+    { month: 'Feb', score: 81 },
+    { month: 'Mar', score: 80 },
+    { month: 'Apr', score: 84 },
+    { month: 'May', score: 86 },
+    { month: 'Jun', score: 85 },
+  ]
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      <Box>
-        <Typography variant="h4" fontWeight={700} gutterBottom>
-          {role === 'employee' ? 'My Dashboard' : role === 'auditor' ? 'Audit Overview' : 'Executive Dashboard'}
-        </Typography>
-        <Typography color="text.secondary">
-          {role === 'employee' ? 'Track your active procurement requests and recent updates.' : 'Cross-functional procurement, vendor, risk, and compliance overview.'}
-        </Typography>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2 }}>
+        <Box>
+          <Typography variant="h4" fontWeight={700} gutterBottom>
+            {role === 'employee' ? 'My Dashboard' : role === 'auditor' ? 'Audit Overview' : 'Executive Dashboard'}
+          </Typography>
+          <Typography color="text.secondary">
+            {role === 'employee' ? 'Track your active procurement requests and recent updates.' : 'Cross-functional procurement, vendor, risk, and compliance overview.'}
+          </Typography>
+        </Box>
+        {role === 'employee' && (
+          <Button variant="contained" size="large" startIcon={<AddRounded />} onClick={() => setCreateDialogOpen(true)}>
+            Create Request
+          </Button>
+        )}
       </Box>
 
       <Grid container spacing={2}>
@@ -168,101 +212,105 @@ const DashboardPage = () => {
         ))}
       </Grid>
 
-      {role !== 'auditor' && (
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={role === 'employee' ? 12 : 8}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" fontWeight={700} gutterBottom>
-                  Monthly Procurement Trend
-                </Typography>
-                <Box sx={{ width: '100%', height: 280 }}>
-                  <ResponsiveContainer>
-                    <LineChart data={monthlyTrend} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="month" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Line type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={3} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {role !== 'employee' && (
-            <Grid item xs={12} lg={4}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" fontWeight={700} gutterBottom>
-                    Compliance Status
-                  </Typography>
-                  <Box sx={{ width: '100%', height: 280 }}>
-                    <ResponsiveContainer>
-                      <PieChart>
-                        <Pie data={complianceStatus} dataKey="value" nameKey="name" outerRadius={90} label>
-                          {complianceStatus.map((entry) => (
-                            <Cell key={entry.name} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          )}
+      <Grid container spacing={3}>
+        <Grid item xs={12} lg={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" fontWeight={700} gutterBottom>
+                Monthly Procurement Trend
+              </Typography>
+              <Box sx={{ width: '100%', height: 320 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={monthlyTrend} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="value" name="Spend ($)" stroke="#2563eb" strokeWidth={3} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Box>
+            </CardContent>
+          </Card>
         </Grid>
-      )}
 
-      {role !== 'employee' && (
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={7}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" fontWeight={700} gutterBottom>
-                  {role === 'auditor' ? 'Audit Violations by Department' : 'Department Spending'}
-                </Typography>
-                <Box sx={{ width: '100%', height: 280 }}>
-                  <ResponsiveContainer>
-                    <BarChart data={departmentSpending} margin={{ top: 10, right: 30, left: 30, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="department" />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="amount" fill="#7c3aed" radius={[8, 8, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} lg={5}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" fontWeight={700} gutterBottom>
-                  Risk Trend
-                </Typography>
-                <Box sx={{ width: '100%', height: 280 }}>
-                  <ResponsiveContainer>
-                    <AreaChart data={riskData.trend} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="month" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area type="monotone" dataKey="value" stroke="#ef4444" fill="#fda4af" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+        <Grid item xs={12} lg={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" fontWeight={700} gutterBottom>
+                Compliance Trend
+              </Typography>
+              <Box sx={{ width: '100%', height: 320 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={complianceTrend} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis domain={[60, 100]} />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="score" name="Compliance Score" stroke="#059669" fill="#34d399" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </Box>
+            </CardContent>
+          </Card>
         </Grid>
-      )}
+
+        <Grid item xs={12} lg={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" fontWeight={700} gutterBottom>
+                {role === 'auditor' ? 'Audit Violations by Department' : 'Department Spending'}
+              </Typography>
+              <Box sx={{ width: '100%', height: 320 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={departmentSpending} margin={{ top: 10, right: 30, left: 30, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="department" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="amount" fill="#7c3aed" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} lg={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" fontWeight={700} gutterBottom>
+                Risk Trend
+              </Typography>
+              <Box sx={{ width: '100%', height: 320 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={[
+                    { month: 'Jan', value: 4.1 },
+                    { month: 'Feb', value: 4.4 },
+                    { month: 'Mar', value: 4.7 },
+                    { month: 'Apr', value: 4.2 },
+                    { month: 'May', value: 5.1 },
+                    { month: 'Jun', value: 4.8 },
+                    { month: 'Jul', value: 5.3 },
+                    { month: 'Aug', value: 5.6 },
+                    { month: 'Sep', value: 5.2 },
+                    { month: 'Oct', value: 5.8 },
+                    { month: 'Nov', value: 6.1 },
+                    { month: 'Dec', value: 5.9 }
+                  ]} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis domain={[3, 7]} />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="value" name="Risk Level" stroke="#ef4444" fill="#fda4af" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
       <Card>
         <CardContent>
@@ -276,7 +324,7 @@ const DashboardPage = () => {
                   <AssessmentRounded color="primary" />
                 </Box>
                 <Box sx={{ flex: 1 }}>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={0.5}>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ justifyContent: 'space-between' }} spacing={0.5}>
                     <Typography fontWeight={600}>{event.message}</Typography>
                     <Chip size="small" label={event.type} variant="outlined" />
                   </Stack>
@@ -289,6 +337,51 @@ const DashboardPage = () => {
           </Stack>
         </CardContent>
       </Card>
+
+      {/* Create Request Dialog */}
+      <Dialog open={createDialogOpen} onClose={() => setCreateDialogOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>Create Procurement Request</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+            Submit a new requisition for manager approval.
+          </Typography>
+          <Stack spacing={2}>
+            <TextField 
+              label="Request Title" 
+              fullWidth 
+              value={newRequest.title} 
+              onChange={(e) => setNewRequest({ ...newRequest, title: e.target.value })} 
+            />
+            <TextField 
+              label="Estimated Amount ($)" 
+              type="number" 
+              fullWidth 
+              value={newRequest.amount} 
+              onChange={(e) => setNewRequest({ ...newRequest, amount: e.target.value })} 
+            />
+            <FormControl fullWidth>
+              <InputLabel>Department</InputLabel>
+              <Select 
+                value={newRequest.department} 
+                label="Department" 
+                onChange={(e) => setNewRequest({ ...newRequest, department: e.target.value })}
+              >
+                <MenuItem value="IT">IT</MenuItem>
+                <MenuItem value="Operations">Operations</MenuItem>
+                <MenuItem value="Finance">Finance</MenuItem>
+                <MenuItem value="HR">HR</MenuItem>
+                <MenuItem value="Legal">Legal</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ p: 2, pt: 0 }}>
+          <Button onClick={() => setCreateDialogOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleCreateSubmit}>
+            Submit Request
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }

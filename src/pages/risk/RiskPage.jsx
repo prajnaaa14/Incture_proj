@@ -57,13 +57,14 @@ const severityColors = {
 const RiskPage = () => {
   const dispatch = useDispatch()
   const { data: riskData, status } = useSelector((state) => state.risk)
-  const loading = status === 'loading' || status === 'idle' || !riskData?.riskList?.length
+  const hasValidData = riskData?.riskList?.length > 0 && riskData?.matrix?.impact?.length > 0 && riskData?.trend?.length > 0 && riskData?.distribution?.length > 0
+  const loading = status === 'loading' || status === 'idle' || !hasValidData
 
   useEffect(() => {
-    if (status === 'idle') {
+    if (status === 'idle' || (status === 'succeeded' && !hasValidData)) {
       dispatch(fetchRiskSignals())
     }
-  }, [status, dispatch])
+  }, [status, hasValidData, dispatch])
 
   if (loading) {
     return (
@@ -100,6 +101,10 @@ const RiskPage = () => {
         </Typography>
       </Box>
 
+      <Typography variant="h5" fontWeight={700} sx={{ mt: 2 }}>
+        Risk Dashboard
+      </Typography>
+
       <Grid container spacing={2}>
         {kpiCards.map((card) => (
           <Grid item xs={12} sm={6} md={3} key={card.title}>
@@ -125,7 +130,7 @@ const RiskPage = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
-                Risk Heat Map
+                Risk Matrix (Heat Maps)
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 5x5 matrix mapping likelihood against impact.
@@ -133,7 +138,7 @@ const RiskPage = () => {
               <Grid container spacing={1}>
                 <Grid item xs={12}>
                   <Grid container spacing={1}>
-                    <Grid item xs={1.5} />
+                    <Grid item xs={2} />
                     {riskData.matrix.impact.map((impact) => (
                       <Grid item xs={2} key={impact}>
                         <Typography variant="caption" fontWeight={600} display="block" align="center">
@@ -146,7 +151,7 @@ const RiskPage = () => {
                 {riskData.matrix.likelihood.map((likelihood, rowIndex) => (
                   <Grid item xs={12} key={likelihood}>
                     <Grid container spacing={1} alignItems="center">
-                      <Grid item xs={1.5}>
+                      <Grid item xs={2}>
                         <Typography variant="caption" fontWeight={600}>{likelihood}</Typography>
                       </Grid>
                       {riskData.matrix.values[rowIndex].map((value) => (
@@ -168,9 +173,9 @@ const RiskPage = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
-                Risk Trend
+                Risk Trends
               </Typography>
-              <Box sx={{ width: '100%', height: 280 }}>
+              <Box sx={{ width: '100%', height: 400 }}>
                 <ResponsiveContainer>
                   <LineChart data={riskData.trend} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -191,9 +196,9 @@ const RiskPage = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
-                Risk Distribution
+                Risk Distribution (Pie Charts)
               </Typography>
-              <Box sx={{ width: '100%', height: 280 }}>
+              <Box sx={{ width: '100%', height: 400 }}>
                 <ResponsiveContainer>
                   <PieChart>
                     <Pie data={riskData.distribution} dataKey="value" nameKey="category" outerRadius={90} label>
@@ -213,9 +218,9 @@ const RiskPage = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" fontWeight={700} gutterBottom>
-                Risk by Category (Bar Chart)
+                Risk Distribution (Bar Charts)
               </Typography>
-              <Box sx={{ width: '100%', height: 280 }}>
+              <Box sx={{ width: '100%', height: 400 }}>
                 <ResponsiveContainer>
                   <BarChart data={riskData.distribution} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -240,7 +245,7 @@ const RiskPage = () => {
           <Typography variant="h6" fontWeight={700} gutterBottom>
             Risk Register
           </Typography>
-          <TableContainer component={Paper} variant="outlined">
+          <TableContainer component={Paper} variant="outlined" sx={{ overflowX: 'auto' }}>
             <Table size="small">
               <TableHead>
                 <TableRow>

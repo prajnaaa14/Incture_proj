@@ -3,21 +3,42 @@
     { "id": "AL-501", "action": "User Login", "user": "john.doe@company.com", "timestamp": "2026-07-01T08:30:00Z", "ip": "192.168.1.105", "status": "Success" },
     { "id": "AL-502", "action": "Vendor Approved", "user": "sarah.smith@company.com", "timestamp": "2026-07-01T09:15:22Z", "ip": "10.0.0.45", "status": "Success" },
     { "id": "AL-503", "action": "Failed Login", "user": "admin@company.com", "timestamp": "2026-07-01T10:05:10Z", "ip": "203.0.113.42", "status": "Failed" },
-    { "id": "AL-504", "action": "Document Uploaded", "user": "mike.jones@company.com", "timestamp": "2026-07-02T11:20:00Z", "ip": "192.168.1.210", "status": "Success" }
+    { "id": "AL-504", "action": "Document Uploaded", "user": "mike.jones@company.com", "timestamp": "2026-07-02T11:20:00Z", "ip": "192.168.1.210", "status": "Success" },
+    { "id": "AL-505", "action": "Password Reset", "user": "emma.wilson@company.com", "timestamp": "2026-07-02T14:45:00Z", "ip": "172.16.254.1", "status": "Success" },
+    { "id": "AL-506", "action": "Risk Score Updated", "user": "system", "timestamp": "2026-07-03T01:00:00Z", "ip": "127.0.0.1", "status": "Success" },
+    { "id": "AL-507", "action": "Policy Changed", "user": "admin@company.com", "timestamp": "2026-07-03T09:30:00Z", "ip": "192.168.1.5", "status": "Success" },
+    { "id": "AL-508", "action": "Failed Login", "user": "unknown@company.com", "timestamp": "2026-07-03T11:12:45Z", "ip": "45.33.22.11", "status": "Failed" },
+    { "id": "AL-509", "action": "Vendor Rejected", "user": "sarah.smith@company.com", "timestamp": "2026-07-04T10:20:30Z", "ip": "10.0.0.45", "status": "Success" },
+    { "id": "AL-510", "action": "User Logout", "user": "mike.jones@company.com", "timestamp": "2026-07-04T17:05:00Z", "ip": "192.168.1.210", "status": "Success" },
+    { "id": "AL-511", "action": "Data Export", "user": "john.doe@company.com", "timestamp": "2026-07-05T08:15:00Z", "ip": "192.168.1.105", "status": "Success" },
+    { "id": "AL-512", "action": "API Key Generated", "user": "developer@company.com", "timestamp": "2026-07-05T13:40:00Z", "ip": "10.1.2.3", "status": "Success" }
   ],
   "userActivities": [
     { "id": "UA-101", "user": "john.doe@company.com", "activity": "Viewed Risk Dashboard", "time": "10 mins ago" },
     { "id": "UA-102", "user": "sarah.smith@company.com", "activity": "Approved PR-10042", "time": "1 hour ago" },
-    { "id": "UA-103", "user": "mike.jones@company.com", "activity": "Updated Vendor Profile", "time": "3 hours ago" }
+    { "id": "UA-103", "user": "mike.jones@company.com", "activity": "Updated Vendor Profile", "time": "3 hours ago" },
+    { "id": "UA-104", "user": "emma.wilson@company.com", "activity": "Downloaded Compliance Report", "time": "5 hours ago" },
+    { "id": "UA-105", "user": "admin@company.com", "activity": "Changed System Settings", "time": "1 day ago" },
+    { "id": "UA-106", "user": "john.doe@company.com", "activity": "Created New Procurement Request", "time": "1 day ago" },
+    { "id": "UA-107", "user": "sarah.smith@company.com", "activity": "Added Comment to PR-10041", "time": "2 days ago" },
+    { "id": "UA-108", "user": "developer@company.com", "activity": "Tested API Integration", "time": "2 days ago" }
   ],
   "systemLogs": [
     { "id": "SL-01", "level": "INFO", "message": "Daily backup completed successfully", "timestamp": "2026-07-02T00:00:00Z" },
     { "id": "SL-02", "level": "WARNING", "message": "High memory usage detected on Node 3", "timestamp": "2026-07-02T04:15:00Z" },
-    { "id": "SL-03", "level": "ERROR", "message": "Failed to connect to email gateway", "timestamp": "2026-07-02T08:45:12Z" }
+    { "id": "SL-03", "level": "ERROR", "message": "Failed to connect to email gateway", "timestamp": "2026-07-02T08:45:12Z" },
+    { "id": "SL-04", "level": "INFO", "message": "Database indexing completed", "timestamp": "2026-07-03T02:30:00Z" },
+    { "id": "SL-05", "level": "WARNING", "message": "API Rate limit approaching for Vendor Sync", "timestamp": "2026-07-03T14:20:00Z" },
+    { "id": "SL-06", "level": "ERROR", "message": "Integration webhook failed for ERP System", "timestamp": "2026-07-04T09:10:05Z" },
+    { "id": "SL-07", "level": "INFO", "message": "System Update v2.1 applied", "timestamp": "2026-07-05T01:00:00Z" },
+    { "id": "SL-08", "level": "INFO", "message": "Cache cleared manually", "timestamp": "2026-07-06T10:05:00Z" }
   ],
   "reports": [
     { "id": "RPT-001", "name": "Monthly Access Review", "generatedBy": "System", "date": "2026-07-01", "status": "Available" },
     { "id": "RPT-002", "name": "Vendor Compliance Audit Q2", "generatedBy": "Sarah Smith", "date": "2026-06-30", "status": "Available" },
-    { "id": "RPT-003", "name": "Failed Login Attempts (Weekly)", "generatedBy": "System", "date": "2026-06-28", "status": "Available" }
+    { "id": "RPT-003", "name": "Failed Login Attempts (Weekly)", "generatedBy": "System", "date": "2026-06-28", "status": "Available" },
+    { "id": "RPT-004", "name": "Risk Exposure Summary", "generatedBy": "Admin", "date": "2026-06-25", "status": "Archived" },
+    { "id": "RPT-005", "name": "Quarterly Procurement Spend", "generatedBy": "John Doe", "date": "2026-06-20", "status": "Available" },
+    { "id": "RPT-006", "name": "System Uptime & Performance", "generatedBy": "System", "date": "2026-06-15", "status": "Available" }
   ]
 }

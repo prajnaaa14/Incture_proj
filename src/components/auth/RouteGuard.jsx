@@ -32,15 +32,6 @@ const RouteGuard = ({ children, allowedRoles }) => {
     return <AccessDenied />
   }
 
-  if (user?.role === 'employee') {
-    const allowedEmployeeRoutes = ['/dashboard', '/procurement', '/notifications', '/settings']
-    const isAllowed = allowedEmployeeRoutes.some((route) => location.pathname === route || location.pathname.startsWith(`${route}/`))
-
-    if (!isAllowed) {
-      return <AccessDenied />
-    }
-  }
-
   return children
 }
 

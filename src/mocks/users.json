@@ -38,5 +38,15 @@
     "avatar": "https://i.pravatar.cc/150?img=36",
     "status": "active",
     "password": "password123"
+  },
+  {
+    "id": 5,
+    "name": "Sarah Connor",
+    "email": "compliance@enterprise.com",
+    "role": "compliance",
+    "department": "Compliance",
+    "avatar": "https://i.pravatar.cc/150?img=37",
+    "status": "active",
+    "password": "password123"
   }
 ]

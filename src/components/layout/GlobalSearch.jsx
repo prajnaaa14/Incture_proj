@@ -1,4 +1,17 @@
-import { SearchRounded, Inventory2Rounded, ManageAccountsRounded, OpenInNewRounded } from '@mui/icons-material'
+import {
+  SearchRounded,
+  Inventory2Rounded,
+  ManageAccountsRounded,
+  OpenInNewRounded,
+  DashboardRounded,
+  SecurityRounded,
+  GppGoodRounded,
+  FactCheckRounded,
+  AssignmentTurnedInRounded,
+  NotificationsRounded,
+  ReportRounded,
+  SettingsRounded
+} from '@mui/icons-material'
 import {
   Autocomplete,
   Box,
@@ -46,7 +59,31 @@ const GlobalSearch = () => {
         path: `/vendors/${v.id}`,
       }))
 
-    return [...requestMatches.slice(0, 5), ...vendorMatches.slice(0, 5)]
+    const pages = [
+      { label: 'Dashboard', path: '/dashboard', icon: <DashboardRounded fontSize="small" /> },
+      { label: 'Procurement', path: '/procurement', icon: <Inventory2Rounded fontSize="small" /> },
+      { label: 'Vendors', path: '/vendors', icon: <ManageAccountsRounded fontSize="small" /> },
+      { label: 'Risk', path: '/risk', icon: <SecurityRounded fontSize="small" /> },
+      { label: 'Compliance', path: '/compliance', icon: <GppGoodRounded fontSize="small" /> },
+      { label: 'Audit', path: '/audit', icon: <FactCheckRounded fontSize="small" /> },
+      { label: 'Approvals', path: '/approvals', icon: <AssignmentTurnedInRounded fontSize="small" /> },
+      { label: 'Notifications', path: '/notifications', icon: <NotificationsRounded fontSize="small" /> },
+      { label: 'Reports', path: '/reports', icon: <ReportRounded fontSize="small" /> },
+      { label: 'Settings', path: '/settings', icon: <SettingsRounded fontSize="small" /> },
+    ]
+
+    const pageMatches = pages
+      .filter((p) => p.label.toLowerCase().includes(query))
+      .map((p) => ({
+        type: 'Navigation',
+        id: p.path,
+        title: p.label,
+        subtitle: `App Page`,
+        icon: p.icon,
+        path: p.path,
+      }))
+
+    return [...pageMatches.slice(0, 3), ...requestMatches.slice(0, 5), ...vendorMatches.slice(0, 5)]
   }, [inputValue])
 
   const handleSelect = (event, option) => {
@@ -104,24 +141,22 @@ const GlobalSearch = () => {
         renderOption={(props, option) => {
           const { key, ...otherProps } = props;
           return (
-            <Box component="li" key={key} {...otherProps} sx={{ p: '0 !important' }}>
-              <ListItemButton sx={{ py: 1, width: '100%' }}>
-                <ListItemIcon sx={{ minWidth: 36 }}>{option.icon}</ListItemIcon>
-                <ListItemText
-                  primary={
-                    <Typography variant="body2" fontWeight={500}>
-                      {option.title}
-                    </Typography>
-                  }
-                  secondary={
-                    <Typography variant="caption" color="text.secondary">
-                      {option.id} • {option.subtitle}
-                    </Typography>
-                  }
-                />
-                <OpenInNewRounded sx={{ fontSize: 16, color: 'text.secondary' }} />
-              </ListItemButton>
-            </Box>
+            <ListItemButton component="li" key={key} {...otherProps} sx={{ py: 1, width: '100%', borderBottom: 1, borderColor: 'divider' }}>
+              <ListItemIcon sx={{ minWidth: 36 }}>{option.icon}</ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography variant="body2" fontWeight={500}>
+                    {option.title}
+                  </Typography>
+                }
+                secondary={
+                  <Typography variant="caption" color="text.secondary">
+                    {option.id} • {option.subtitle}
+                  </Typography>
+                }
+              />
+              <OpenInNewRounded sx={{ fontSize: 16, color: 'text.secondary' }} />
+            </ListItemButton>
           );
         }}
         noOptionsText={inputValue ? "No results found" : "Type to search"}

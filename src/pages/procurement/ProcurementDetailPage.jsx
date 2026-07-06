@@ -28,9 +28,10 @@ import {
   Tabs,
   Typography,
 } from '@mui/material'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link as RouterLink, useParams } from 'react-router-dom'
-import requests from '../../mocks/requests.json'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProcurementPipeline } from '../../store/slices/procurementSlice'
 
 const statusColors = {
   Pending: 'warning',
@@ -42,8 +43,20 @@ const statusColors = {
 const ProcurementDetailPage = () => {
   const { id } = useParams()
   const [tab, setTab] = useState('overview')
+  const dispatch = useDispatch()
+  const { items: requests, status } = useSelector((state) => state.procurement)
 
-  const request = useMemo(() => requests.find((item) => item.id === id), [id])
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchProcurementPipeline())
+    }
+  }, [status, dispatch])
+
+  const request = useMemo(() => requests.find((item) => item.id === id), [id, requests])
+
+  if (status === 'loading' || status === 'idle') {
+    return <Box sx={{ p: 3 }}>Loading...</Box>
+  }
 
   if (!request) {
     return (

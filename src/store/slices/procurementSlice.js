@@ -30,7 +30,26 @@ const initialState = {
 const procurementSlice = createSlice({
   name: 'procurement',
   initialState,
-  reducers: {},
+  reducers: {
+    addProcurementRequest: (state, action) => {
+      const newRequest = {
+        id: `REQ-${String(state.items.length + 1).padStart(3, '0')}`,
+        title: action.payload.title,
+        department: action.payload.department,
+        amount: Number(action.payload.amount),
+        status: 'Pending',
+        createdBy: action.payload.createdBy || 'System',
+        createdDate: new Date().toISOString().split('T')[0],
+        approvalHistory: [
+          { step: 'Submitted', date: new Date().toISOString().split('T')[0], by: action.payload.createdBy || 'System' }
+        ],
+        comments: [],
+        attachments: []
+      };
+      state.items.unshift(newRequest);
+      state.totalValue += newRequest.amount;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProcurementPipeline.pending, (state) => {
@@ -48,4 +67,5 @@ const procurementSlice = createSlice({
   },
 })
 
+export const { addProcurementRequest } = procurementSlice.actions
 export default procurementSlice.reducer

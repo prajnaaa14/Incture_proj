@@ -49,10 +49,8 @@ const CompliancePage = () => {
   const loading = status === 'loading' || status === 'idle'
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchComplianceItems())
-    }
-  }, [status, dispatch])
+    dispatch(fetchComplianceItems())
+  }, [dispatch])
 
   if (loading) {
     return <Box sx={{ p: 3 }}><Skeleton variant="rectangular" height={400} /></Box>
@@ -103,7 +101,7 @@ const CompliancePage = () => {
               <Typography variant="h6" fontWeight={700} gutterBottom>
                 Violations
               </Typography>
-              <TableContainer component={Paper} variant="outlined">
+              <TableContainer component={Paper} variant="outlined" sx={{ overflowX: 'auto' }}>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
@@ -161,7 +159,7 @@ const CompliancePage = () => {
           <Typography variant="h6" fontWeight={700} gutterBottom>
             Expiring / Expired Certifications
           </Typography>
-          <TableContainer component={Paper} variant="outlined">
+          <TableContainer component={Paper} variant="outlined" sx={{ overflowX: 'auto' }}>
             <Table size="small">
               <TableHead>
                 <TableRow>

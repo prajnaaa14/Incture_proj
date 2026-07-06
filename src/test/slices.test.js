@@ -8,7 +8,7 @@ describe('redux slices', () => {
   it('handles auth login success and failure', async () => {
     const store = configureStore({ reducer: { auth: authReducer, ui: uiReducer } })
 
-    const success = await store.dispatch(loginThunk({ email: 'asha.rao@enterprise.com', password: 'Admin123!' }))
+    const success = await store.dispatch(loginThunk({ email: 'admin@enterprise.com', password: 'password123' }))
     expect(success.type).toBe('auth/loginThunk/fulfilled')
     expect(store.getState().auth.isAuthenticated).toBe(true)
 
@@ -30,7 +30,7 @@ describe('redux slices', () => {
 
     const result = await store.dispatch(fetchProcurementPipeline())
     expect(result.type).toBe('procurement/fetchProcurementPipeline/fulfilled')
-    expect(store.getState().procurement.items).toHaveLength(3)
+    expect(store.getState().procurement.items).toHaveLength(30)
   })
 
   it('loads notifications', async () => {
